@@ -1,0 +1,141 @@
+#######################################################
+		# # # # #
+		# SVHIP #
+		# # # # #
+#######################################################
+
+Version: 0.0.28
+
+Svhip is a specialized SVM training software designed for use with the classifier module of RNAz. Shvip handles the generation of training data from raw alignment files and writes a .model file for use with RNAz. Alternate options allow for the creation of independant test and training sets or simply the accuracy optimization of pre-calculated training instances for later classifier training.
+
+Command line argument always follows the form:
+	>> python3 -m svhip -i [INPUT] -o [OUTPUT] [OPTION] [OPTION ARGUMENTS]
+
+IMPORTANT TERMINOLOGY:
+Svhip makes extensive use of four different types of files, recognizable by their suffix:
+	
+	.dat		.dat files contain calculated features of alignments/alignment windows. 
+			They are created any time a new input alignment is processed and may contain
+			positive and negative or only positive feature vector instances. These are 
+			already scaled, can be directly used for classifier training using the 
+			-write_m command line argument and are utilized to hold training data 
+			for quick later recalibration or to allow flexible addition of new data.
+			For this reason they are also saved as an intermediate result when following
+			the full pipeline from alignment to trained classifier using the -auto command.
+			Manually editing them is highly deprecated. 
+
+	.model		Contain all data necessary for the trained classifier to function and can be simply
+			loaded using the edited RNAz software. Loading a new .model file with RNAz is
+			equivalent to swapping he (dinucleotide, sequence based) classifier. End product of
+			the pipeline.
+
+	.aln_align_n_i	Partial alignment files, where n refers to the number of sequences per alignment and
+			i is an internal index counting the number of files created. These contain the alignment 
+			windows created from the pre processed input alignment (default columns: 120, step size: 40).
+			From these, feature vectors contained in the .dat files are calculated. They also serve 
+			as test set instances, as they are already processed for prediction using RNAz 
+			(see RNAz documentation).
+	
+	.random		'Negative' control alignments, created with SISSIz v. 0.11. These serve as dinucleotide and 
+			gap-controlled null models for both negative instance creation and structural conservation
+			validation. Remember to also include the randomized alignment windows when constructing a 
+			test set with Svhip. For classifier training purposes, they are automatically included 
+			upon generation. 
+	
+OPTIONS:
+General options:
+	-h, --man: 	Display this manual. When combined with the -testset, -write_m
+			arguments, it describes specific options for these methods instead.
+			Since -auto combines both methods, 
+	-svcfg:		Saves the current parameter string (i.e arguments except [INPUT] 
+			and [OUTPUT] as a <name>.cfg file in /configs. [EXPERIMENTAL]
+			Use at your own discretion.
+	-ldcfg 		Loads a set of arguments saved as a .cfg file in /configs. Only 
+			filename (with or without .cfg) is required. [INPUT] arguments
+			are ignored and will still have to be manually given. [EXPERIMENTAL]
+			Use at your own discretion.
+
+At the moment Svhip has four three methods (-testset, -write_m, -auto), which are described as follows:
+	-testset: 	Takes the arguments given in [OPTION ARGUMENTS] as well as an 
+			[INPUT] parameter and writes a .dat file of training feature vectors
+			based on input files. Please note that testset_creation module
+			has its own set of options, for a complete list refer to help 
+			function of this module, i.e.:
+			>> python3 -m -svhip -testset -h
+			In any case, alignment windows are created and can be later used as
+			testing instance with RNAz.
+	-write_m:	Takes the arguments given in [OPTION ARGUMENTS] as well as an 
+			[INPUT] parameter, optimizes hyper parameters and writes a .model 
+			file based on training data
+			gathered using the testset_creation module (a .dat file written by
+			the -testset or -auto methods). Please note that the
+			write_model module has its own set of options, for a complete 
+			list refer to help function of this module, i.e.:
+			>> python3 -m -svhip -write_m -h
+	-auto:		Combines both above options. Takes an [INPUT] parameter and creates 
+			a .model file. Note that at the moment this option will be
+			executed using the default parameters for both modules, so 
+			the input syntax amounts to:
+			>> python3 -m -svhip -i [INPUT] -o [OUTPUT FILE] -auto
+			Alignment windows created are still saved for potential later use.
+
+In the most broad sense, Svhip supports three different ways of getting from a set of input alignments to a working classifier to be used with RNAz:
+
+	(1)	The most simple case is beginning with a single input fasta file. Obviously, this is rarely sufficient 	
+		for a functional classifier, but it allows the flexible later inclusion of one additional alignment file 
+		in a pre-existing .dat file, that can then be used to retrain the classifier with the -write_m option
+		without having to reprocess the entire pipeline for all alignments. An example case would be:
+		
+		>> python3 -m svhip -i [INPUT ALIGNMENT] -o [TARGET .dat FILE] -testset
+
+		Svhip will then ask if a negative instance set should automatically be generated. If "y" is given,
+		the alignment will be processed and negative and positive feature vector instances added to the .dat
+		file (if none is present, it will be generated). If 'n' is answered, only positive feature vectors will be 
+		calculated. Should for some reason really a classifier be trained using only one input alignment, it
+		is sufficient to use:
+
+		>> python3 -m svhip -i [INPUT ALIGNMENT] -o [OUTPUT .model FILENAME] -auto
+
+	(2)	The typical use case is assumed to be as follows: A collection of input .FASTA files is to be 
+		processed, filtered and then a classifier trained based on their features, with automatic
+		negative set creation. For this case, it is sufficient to include all input files in a single 
+		directory and tell Svhip this directory using the -auto and -readall command line argument:
+
+		>> python3 -m svhip -i [INPUT DIRECTORY] -o [OUTPUT .model FILENAME] -auto -readall
+
+		Then 'y' should be answered when Svhip asks if negative sets should automatically be generated 
+		for all input files. A .model file will be written using both positive and generated negative instances.
+
+	(3)	If for any reason the automatic generation of negative instances is not desired, Svhip can be given 
+		directions to a list of files to include in either the negative or the positive training
+		set. This .ini file has to be configured as follows:
+
+		+1:[FILEPATH]
+		-1:[FILEPATH]
+		...
+		
+		where +1 denotes a path to a file to include in the positive training set and -1 the path to
+		a negative set entry. The function call has then to refer to the .ini file:
+
+		>> python3 -m svhip -i [FILE.ini] -o [OUTPUT .model FILE] -auto -readall
+		
+		Or, if a testset is to be created this way:
+
+		>> python3 -m svhip -i [FILE.ini] -o [OUTPUT .dat FILENAME] -testset -readall
+
+	((4))	Not starting from an input FASTA file or alignment, to process a pre created .dat file 
+		(for example using the (1) option described here) to train a classifier is done by simply
+		using the following command:
+
+		>> python3 -m svhip -i [.dat INPUT FILE] -o [.model OUTPUT FILE] -write_m 
+
+NOTE: For any of these use cases, the explicit naming of the output file can be omitted. In this case, a name
+will be generated based on the input file name, and the output file will be generated in the current working directory! 		
+
+Now, the above cases all assume that default parameters are to be used. For explicit descriptions of all arguments
+to fine-tune parameters like number of cross-validation steps, sample size for secondary structure validation and
+C and gamma parameter range refer to the -testset and -write_m man pages (see above). Parameters from both pages can
+be used with the -auto command as it combines both methods.
+
+################################################################################
+

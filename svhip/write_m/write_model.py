@@ -1,0 +1,594 @@
+import sys 
+import os
+import_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
+sys.path.append(import_path)
+sys.path.append(os.path.abspath(os.path.join(import_path, 'libsvm_3_22/python/')))
+sys.path.append(os.path.abspath(os.path.join(import_path, 'defaults/')))
+sys.path.append(os.path.abspath(os.path.join(import_path, 'currysoup/')))
+sys.path.append(os.path.abspath(os.path.join(import_path, 'logger/')))
+
+import default_params
+import multiprocessing
+from decimal import Decimal
+from svmutil import *
+import math
+from svm import *
+from svm import __all__ as svm_all
+from read_input import *
+import scaling_config
+import itertools
+import subprocess
+from currysoup import write_soup
+import logger
+
+################################# Default parameters ###################
+'''
+These are default parameters, for options not set manually on main() call.
+Feel free to change as needed in defaults/default_params.py. Listed here for
+convenience.
+
+def_c_min = 0.001
+def_c_high = 100000
+def_Gamma_min = 0.001
+def_Gamma_high = 100000
+def_c_num = 20
+def_g_num = 20
+def_Gamma_Base = 2 
+def_C_base = 2 
+svm_class = 0   #c_svc in libsvm param
+def_n_fold = 10 #iterations for cross-validation
+def_nu = 0.5
+def_outf = 'decision.model'
+'''
+C_base = 2
+Gamma_Base = 2
+kernel_type = 2 #radial basis function in libsvm param
+def_opt = default_params.get_write_m_defaults()
+
+def svm_type():
+    return 'c_svc'
+
+def gamma():
+    #PLACEHOLDER - 
+    return Gamma_Base
+    
+def c_exp(c):
+    if c > 0:
+        return math.log(c, C_base)
+    else:
+        return C_min
+
+def gamma_exp(gamma):
+    if gamma > 0:
+        return log(gamma, Gamma_Base)
+    else:
+        return Gamma_min
+
+def C_val(cexp):
+    return C_base**cexp
+
+def gamma_val(gexp):
+    return Gamma_Base**gexp
+
+"""
+Function to set a few standard parameters, probably soon redundant.
+"""
+def set_parameters(svm_param):
+    svm_param.gamma = gamma()
+    svm_param.kernel_type = kernel_type
+    svm_param.svm_type = svm_class
+    return svm_param
+    
+################################## Scaling #############################
+"""
+SVM values taken into consideration are scaled to interval [-1, 1] - 
+therefore the following functions have to be called before writing.
+Modeled after scaling algorithm in RNAz.svm_helper.c i.e. training range
+is assumed as absolute range.
+Currently already handled by testset creation, to be deleted in final version.
+This redundant function will be kept for now as it may still serve a 
+purpose in testing.
+
+"""
+
+def scale_z(z_base, z_range):
+
+    return float(2*((z_base -z_range[0])/(z_range[1] -z_range[0])) -1)
+
+def scale_SCI(SCI_base, SCI_range): 
+
+    return float(2*((SCI_base -SCI_range[0])/(SCI_range[1] -SCI_range[0])) -1)
+        
+def scale_shannon(shannon_base, shannon_range):
+
+    return float(2*((shannon_base -shannon_range[0])/(shannon_range[1] -shannon_range[0])) -1)
+        
+def scale_prob_data(dict_list, ranges):
+    for dic in dict_list:
+        dic[1]= scale_z(dic.get(1), ranges[0]) 
+        dic[2]= scale_SCI(dic.get(2), ranges[1])
+        dic[3]= scale_shannon(dic.get(3), ranges[2])
+    return dict_list
+        
+def scale_vector(data_vector):
+    hold_value = 0
+    for i in range(0, len(data_vector)):
+        hold_value = scale_z(data_vector[i][0])
+        data_vector[i][0] = hold_value
+        hold_value = scale_SCI(data_vector[i][1])
+        data_vector[i][1] = hold_value
+        hold_value = scale_shannon(data_vector[i][2])
+        data_vector[i][2] = hold_value
+    return data_vector
+
+################################# Secondary function call ################
+"""
+NOT FOR USE RIGHT NOW. !!!!!!!!!!!!!!!!!!!
+
+Alternative to main function, not fully implemented. Main use is giving a second
+entrypoint for data tupels that were not parsed using the testset_creation
+pipeline. 
+With restructuring of package will probably be discarded soon, as no practical use case could be found.
+The curse of spontaneous ideas.
+
+#Each Data point has to be handed over as a 3-tuple of float (class, z-score, SCI, Shannon-Entropy). The
+#Scores will have to be normalized. If parameters are to be set manually, they will have to be in dictionary form. The whole
+#data vector has to be a list of these tuples.
+"""
+def write_model(categories, data_vector, name, parameters=None):
+
+    if parameters== None:
+        parameters_list = set_parameters(svm_parameter())
+    elif isinstance(parameters, dict):
+        parameters_list = svm_parameter()
+        try:
+            parameters_list.kernel_type = parameters.get('kernel_type')
+            parameters_list.svm_type = parameters.get('svm_class')
+            parameters_list.gamma = parameters.get/homes/brauerei/christopher/WorkspaceRNAz/package/testenvir/testing/svhip_dev/svhip/write_m('gamma')
+            parameters_list.C = parameters.get('c_value')
+        except KeyError:
+            print('Paramters list given is incomplete.')
+    else:
+        print('Invalid parameter list given. Fallback to default.')
+        parameters_list = set_parameters(svm_parameter())
+    
+    if not isinstance(data_vector, (list, tuple)):
+        print("Invalid data input - cannot be parsed. Data vector has to be of type list.")
+    else:
+        for i in range(0, len(data_vector)):
+            if not isinstance(data_vector[i], (list,tuple)):
+                print("Invalid data input - cannot be parsed. Each Data point has to be handed over as a 3-tuple of float of format (z-score, SCI, Shannon-Entropy).")
+                sys.exit(1)
+            elif len(data_vector[i]) != 3:
+                print("Invalid data input - cannot be parsed. Each Data point has to be handed over as a 3-tuple of float of format (z-score, SCI, Shannon-Entropy).")
+                sys.exit(1)
+            else:
+                for a in range(0, 3):
+                    if not isinstance(data_vector[i][a], float):
+                        print('Invalid format in data tuple. Input values have to be float.')
+                        sys.exit(1)
+                    else:
+                        continue
+    
+    #Scaling:
+    data_scaled = scale_vector(data_vector)
+    
+    #############Call actual svm subroutines############################
+    problem_vector = parse_problem_instance(categories, data_scaled)
+    svm_problem_instance = create_svm_problem(problem_vector[0], problem_vector[1])
+    #m = call_svm_trainer(svm_problem, parameters_list)
+    m = call_svm_crossvalidate(svm_problem_instance, parameters_list, n_fold)
+    
+    svm_save_model(str(name), m)
+
+##############################Parameter search grid#####################
+"""
+Creates a search grid of given ranges with intervals scaled according to 
+desired number of steps (def: 20).
+"""
+def create_grid(c_low, c_up, g_low, g_up, num_c, num_g):
+    """Create parameter search grid.
+
+    Returns list of tuples. Each tuple has the form:
+        (<log2(C) value>, <log2(gamma) value>)
+
+    Arguments:
+    - c_low -- Lower bound of log2(C).
+    - c_up -- Upper bound of log2(C).
+    - g_low -- Lower bound of log2(gamma).
+    - g_up -- Upper bound of log2(gamma).
+    - num_c -- Number of unique log2(C) values in the grid.
+    - num_g -- Number of unique log2(gamma) values in the grid.
+    """
+    rel_pos = []
+    d = (2**num_g) - 2
+
+    for i in range(1, num_g +1):
+        rel_pos.append((2**i )/d)
+
+    def values(low, up, num, rel_pos):
+        l = Decimal(str(low))
+        u = Decimal(str(up))
+        s = float(u-l)
+        vals = [float((l)+Decimal(rel_pos[i]*s)) for i in range(int(num))]
+        return vals
+
+    cs = values(c_low, c_up, num_c, rel_pos)
+    gs = values(g_low, g_up, num_g, rel_pos)
+    
+
+    return sorted(itertools.product(cs,gs)), cs, gs
+   
+def parameters_grid_search( categories, values, parameters, nproc, mute, epsilon, just_max = False, acc_name = ""):
+    
+    c_low, c_high, g_low, g_high, num_c, num_g, n_folds, nu = parameters            
+    '''
+    Spawn several processes for optimal parameter estimation.
+    Rightn now orients itself according to amount of cpu cores.
+    Getting .apply_async from multiprocessing module to work would
+    be desirable and will be further looked into.
+    '''
+    search_grid, c_values, g_values = create_grid(c_low, c_high, g_low, g_high, num_c, num_g)
+
+    #cn = (c_high - c_low) / (num_c - 1) / 2
+    #gn = (g_high - g_low) / (num_g - 1) / 2
+    process_count = nproc
+    
+    '''
+    #OPTIONAL ----------------------
+    #Enable for testing: Write us a log for potential later Accuracy plot...
+
+    with open("Accuracy_log_ClanSet3.txt", 'a') as A:
+        A.write("New flanks! Gamma: " + str(g_low) + "; " + str(g_high) + " C: " + str(c_low) + "; " + str(c_high) + "\n")
+        A.write("Grid: \n")
+        for point in search_grid:
+            A.write(str(point[0]) + '; ' + str(point[1])  + '\n')
+    '''
+    #Process the grid:
+    with multiprocessing.Pool(process_count) as process_pool:
+
+        res_list = []
+        argx = []
+        if mute is False:
+            print("Begin " + str(n_folds) + "-fold cross validation...")
+        
+        for point in search_grid:
+            c_val, g_val = point
+            argx.append([categories, values, n_folds, c_val, g_val, nu, mute])
+        res_list = process_pool.map(call_svm_crossvalidate, argx)
+        print(res_list)
+        
+        if mute is False:
+            print("Cross validation finished.")
+        res_dict = {}
+        for n in range(0, len(res_list)):
+            point = argx[n][3], argx[n][4]
+            res_dict[point] = res_list[n]
+        errors = {}
+        for point in search_grid:
+            er = res_dict.get(point)
+            errors[er] = point
+    
+    '''
+    as Felix correctly noted, we have a problem with errors being a hash table (due to likelyhood of duplicates). Extract maximum from
+    res_list instead - implemented below
+
+    As a side note, Siggi implemented a comparable algorithm at some point (but non-recursive). In his version,
+    the hash-table-error issue remains and will probably lead to wrong results in practice. 
+    Can fix this on demand, if deemed necessary.
+    '''
+
+    smallest_error = max(res_list)
+    #smallest_error = sorted(errors, reverse=True)[0]
+
+
+    '''
+    #OPTIONAL --- For debugging/plotting only
+    with open(acc_name, 'a') as A:
+        for n in range(0, len(res_list)):
+            A.write(str(res_list[n]) + ": " + str(argx[n][3]) + ', '+str(argx[n][4])+ '\n')
+        A.write('\n')
+        A.write("Best acc.: " +  str(smallest_error) + "\n \n")
+    '''
+    
+    print("Accuracy: " + str(smallest_error))
+    best_c_val, best_g_val = errors.get(smallest_error) 
+
+    '''
+    If this is a recursive check to estimate structure of the next grid, only returning the absolute maximum is enough
+    '''
+
+    if just_max is True:
+        return max(res_list)
+    
+    if mute is False:
+        print("Smallest error for: C = " + str(best_c_val) + ' gamma = ' + str(best_g_val))
+    
+    def find_neighbors(point, values):
+
+        low, high = point, point
+        for i in range(0, len(values)):
+            if values[i] == point:
+                if (i-1) >= 0:
+                    low = values[i-1]
+                if (i+1) <= len(values)-1:
+                    high = values[i+1]
+        return low, high
+
+    def find_deep_maximum(best_acc, res_list, argx, c_values, g_values, n_folds, nu, mute, nproc, categories, values, num_c, num_g, acc_name, epsilon):
+
+        deep_accs = []
+        cval = 0
+        gval = 0
+        n_screened = 0
+        
+        for n in range(0, len(res_list)):
+            '''
+            Multiple Maxima are very much possible and will be screened accordingly - but not more than 10 to somewhat limit run time.
+
+            Proposal: The presence of already > 10 local maxima might already indicate a sufficient flattening of the accuracy fucntion topography - early exit point for runtime reduction?
+            '''
+            if res_list[n] == best_acc and n_screened <= 10:
+                n_screened += 1
+                cval, gval = argx[n][3], argx[n][4]
+                
+                c_high, c_low, g_high, g_low = new_flanks(cval, gval, c_values, g_values)
+                parameters = [c_low, c_high, g_low, g_high, num_c, num_g, n_folds, nu]
+                deep_accs.append(parameters_grid_search( categories, values, parameters, nproc, mute, epsilon, True, acc_name))
+        
+        deep_index = deep_accs.index(max(deep_accs))
+
+        return deep_index                
+
+
+    def new_flanks(best_c, best_g, c_values, g_values):
+        #sorted_er = sorted(errors, reverse=True)
+        lc, rc = find_neighbors(best_c, c_values)
+        lg, rg = find_neighbors(best_g, g_values)
+        #c_dist = abs(rg -lg)
+        #g_dist = abs(rc -lc)
+
+        #c_dist, g_dist are not really needed here, but where used in a test before
+        return rc, lc, rg, lg
+   
+    def yield_maximum():
+        pass
+
+    
+    '''
+    Repeat grid search with closer values until we hit a set threshhold. Else return
+    the found final values.
+    '''
+    #c_high, c_low, g_high, g_low = new_flanks(best_c_val, best_g_val, c_values, g_values)
+    
+    err_sorted = sorted(errors, reverse=True)
+
+    '''
+    Set epsilon to default if 0 or not specified (see /defaults/)
+    '''
+    if epsilon == 0.0:
+        epsilon = default_params.get_epsilon()
+
+    '''
+    If errors are all equal, duplicate value to allow for dummy comparison in the next step - otherwise too many redundant if-statements
+    '''
+
+    if len(err_sorted) == 1:
+        err_sorted.append(err_sorted[0])
+    '''
+    Reiterate grid search with new flanks until maximal error difference of best values is
+    below set epsilon:
+    '''
+    
+    if abs(err_sorted[len(err_sorted) -1] - err_sorted[0]) > epsilon:
+        deep_index = find_deep_maximum(max(res_list), res_list, argx, c_values, g_values, n_folds, nu, mute, nproc, categories, values, num_c, num_g, acc_name, epsilon)
+
+        best_c_val, best_g_val = argx[deep_index][3], argx[deep_index][4]
+        c_high, c_low, g_high, g_low = new_flanks(best_c_val, best_g_val, c_values, g_values)
+
+        parameters = [c_low, c_high, g_low, g_high, num_c, num_g, n_folds, nu]
+        return parameters_grid_search( categories, values, parameters, nproc, mute, epsilon, False, acc_name)
+    
+    else:
+        param_dict = {'log_c': best_c_val, 'log_gamma': best_g_val, 'nu': nu}
+        return smallest_error, param_dict
+
+#########################Parse input data###############################
+"""
+
+First function is for processing data gathered with testset_creation.py;
+Second one is for manual compilation of categories and problem vectors
+parsed with either read_input.py from RNAz files or concatenation of sets.
+If possible, following the pipeline (first option) is advised.
+"""
+def read_problem_data(filename):
+    try:
+        problem = svm_read_problem(filename)
+    except Exception as e:
+        function_log.write_log(str(e))
+        raise e
+    return problem[0], problem[1]
+
+def parse_problem_instance(category_list, input_data):
+    if not isinstance(category_list, (list, tuple)) or not isinstance(input_data, (list, tuple)):
+        lg_message = "FATAL: Invalid format for input data. Expected are two lists/tuples with training categories and data vectors."
+        function_log.write_warning(lg_message) 
+        raise TypeError(lg_message)
+        return None
+    elif len(category_list)!=len(input_data):
+        lg_message = "FATAL: Lengths of category list and data vector do not match!"
+        function_log.write_warning(lg_message) 
+        raise TypeError(lg_message)
+        return None
+    else:
+        problem_vector = []
+        problem_inner_vector = []
+        problem_vector.append(category_list)
+        for i in range(0, len(input_data)):
+            new_dict = {
+                        1: input_data[i][0],
+                        2: input_data[i][1],
+                        3: input_data[i][2]
+                        }
+            problem_inner_vector.append(new_dict)
+        problem_vector.append(problem_inner_vector)
+    
+    return problem_vector
+
+#########################Call libsvm subroutine#########################
+def create_svm_problem(categories, problem_values):
+    try:
+        problem_set = svm_problem(categories, problem_values)
+    except Exception as e:
+        function_log.write_log(str(e))
+        raise e
+    return problem_set
+  
+def call_svm_trainer(categories, values, param_dict, outfile):
+    
+    try:
+        cmd = '-s {svm_type} -t {kernel_type} -c {c} -g {g} -n {nu} -b 1'.format(
+            svm_type = 0,
+            kernel_type = kernel_type,
+            c = param_dict.get('log_c'),
+            g = param_dict.get('log_gamma'),
+            nu = param_dict.get('nu')
+            )
+        '''
+        parameters.svm_type = 0
+        parameters.kernel_type = kernel_type
+        #parameters.n = n_fold
+        parameters.gamma = param_dict.get('log_gamma')
+        parameters.C = param_dict.get('log_c')
+        parameters.nu = param_dict.get('nu')
+        '''
+        problem = svm_problem(categories, values)
+        print('Svm trainer function of libsvm called...')
+        m = svm_train(problem, cmd)
+        if '.model' not in outfile:
+            outfile = outfile + '.model'
+        svm_save_model(outfile, m)
+        print('File written: ' + str(outfile))
+    except Exception as e:
+        function_log.write_log(str(e))
+        raise e
+    
+    return 1
+    
+def call_svm_crossvalidate(argx):
+    categories, values, n_folds, c_val, g_val, nu, mute = argx
+    
+    cmd = '-s {svm_type} -t {kernel_type} -c {c} -g {g} -v {n}'.format(
+            svm_type = 0,
+            kernel_type = kernel_type,
+            c = (c_val),
+            g = (g_val),
+            n = n_folds
+            )
+    
+    if mute is False:
+        print('Crossvalidation on datapoint: C = ' + str(c_val) + ', gamma = ' + str(g_val))
+    '''
+    NOTE: For completely unknown reasons the annotated code is defunct for now. 
+    Implemented secondary solution that yields same
+    results, so no real problem, but it remains odd.
+    I will investigate when there is time.
+    
+    try:
+        parameters.svm_type = 4
+        parameters.kernel_type = kernel_type
+        parameters.n = n_folds
+        parameters.gamma = gamma_val(g_val)
+        parameters.C = C_val(c_val)
+        parameters.nu = nu
+        parameters.cross_validation = True
+        MSE = svm_train(prob, parameters)
+    except Exception as e:
+        print(str(e))
+        function_log.write_log(str(e))
+        raise e
+    '''
+    try:
+        ACC = svm_train(categories, values, cmd)
+    
+    except Exception as e:
+        function_log.write_log(str(e))
+        print("Invalid gamma value... Skipping")
+        return 0.0
+    
+    return ACC
+    
+###############################Main#####################################
+
+def main(argx = None, inputfile=None, outfile=None):
+    """
+    options = [None, c_low, c_high, g_low, g_high, num_c, num_g, n_fold, nu, output_name]
+    
+    Initialize parameters, handle folder structure:
+    """
+    this_folder = os.path.dirname(os.path.abspath(__file__))
+    parameters = svm_parameter()
+    
+    if argx == None:
+        argx = sys.argv
+    else:
+        pass
+    
+    if '-h' in argx or '--man' in argx:
+        print_help(this_folder)
+        return None
+    '''
+    Parse function arguments with currysoup module:
+    '''
+    options, nproc, mute, epsilon = write_soup(argx, inputfile, outfile, function_log)
+
+    '''
+    If options for grid search are not specified, default is loaded:
+    '''
+    for n in range(0, len(options)-1):
+        if options[n] == None:
+            options[n] = def_opt[n]    
+    if nproc == None:
+        nproc = multiprocessing.cpu_count()
+
+    '''
+    Attempt to create problem instance:
+    '''
+    try:
+        categories, values = read_problem_data(inputfile)
+    except Exception as e:
+        function_log.write_log(str(e))
+        raise e
+       
+    '''
+    Values are already scaled in this version :
+    '''
+    #values = scale_prob_data(values, ranges)
+    '''
+    Create grid search and write model:
+    '''
+    smallest_error, param_dict = parameters_grid_search(categories, values, options[1:9], nproc, mute, epsilon, False, inputfile.replace('.dat', '.acc') )
+    ret = call_svm_trainer(categories, values, param_dict, options[9])
+    if ret == 1:
+        print("Process succesfully finished.")
+    else:
+        lg_message = "Something went wrong. Please check input format and paramter range. Since this is an unspecified error, please inform developer."
+        function_log.write_warning(lg_message) 
+        raise ValueError(lg_message)
+
+################################# Misc. ################################
+
+def print_help(this_folder):
+    with open(os.path.join(this_folder, 'write_model.help'), 'r') as f:
+        print(f.read())
+    return None
+
+########################################################################
+if __name__ == '__main__':
+    main()
+    
+def write_m(argx = None, inputfile=None, outfile=None, flog=None):
+    global function_log
+    function_log = flog
+    main(argx, inputfile, outfile)
+    return None
