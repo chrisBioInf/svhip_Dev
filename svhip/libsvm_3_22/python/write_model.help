@@ -1,0 +1,49 @@
+#######################################################
+		Module: Write_model.py
+#######################################################
+
+Version: 0.0
+
+This module uses the data prepared by testset_creation.py to generate decision models for use in RNAz prediction. 
+Standard usage:
+	>> python3 write_model.py [options] [inputfile]
+
+If it is not clear which parameter flags are to be set, a minimalist working program call would be:
+ 
+	>> python3 write_model.py -outf mymodel.model [inputfile]
+
+This writes the program output to the new file 'mymodel.model'.
+Another way would be to simply leave the [options] field empty - in this case the program will fall back to default parameters. 
+All options are used according to schematic:
+	... -option [input] ...
+
+Overview of options:
+
+	-h: 	Displays this manual.
+	-c_low:	Default: 0 
+		Minimum C value for grid search. Has to be >= 0.
+	-c_high:Default: 10
+		Maximum C value for grid search.
+	-g_low:	Default: 0 
+		Minimum C value for grid search.
+	-g_high:Default: 10
+		Maximum C value for grid search.
+	-num_c: Default: 20
+		Number of C values to generate for grid search. Effectively changes 
+		x axis length of the search grid.
+	-num_g: Default: 20
+		Number of gamma values to generate for grid search. Effectively changes 
+		y axis length of the search grid.
+	-n_fold:Default: 10
+		Number of crossvalidation per datapoint in search grid. Influences how 
+		trustworthy the calculated mean square error and thereby how accurate
+		the written model is. If runtime is not an issue, higher is probably better.
+	-nu: 	Default: 0.5
+		The parameter nu is an upper bound on the fraction of margin errors 
+		and a lower bound of the fraction of support vectors relative to the 
+		total number of training examples. Must be in [0,1].
+		NOT suggested to be set manually.
+	-outf:  Destine a file for the output to be written into.
+
+################################################################################
+
