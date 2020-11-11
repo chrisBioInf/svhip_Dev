@@ -5,8 +5,6 @@ CURRY_DIR = os.path.dirname(os.path.abspath(__file__))
 PAR_DIR = os.path.abspath(os.path.join(CURRY_DIR, os.pardir)) 
 sys.path.append(os.path.abspath(os.path.join(PAR_DIR, 'logger/')))
 
-import logger
-
 '''
 This module serves as an extension of the main module to drastically unclog
 the (before barely readable) code used to interpret the command line. In 
@@ -20,9 +18,9 @@ The origin of the name is a secret to everybody.
 ##########################Functions called from main()##################
 
 def help_needed(argx, func_argx):
-    if ('-h' in argx and '-write_m' not in argx and '-testset' not in argx) or ('--man' in argx and '-write_m' not in argx and '-testset' not in argx) :
+    if ('-h' in argx and '-write_m' not in argx and '-data_gen' not in argx) or ('--man' in argx and '-write_m' not in argx and '-data_gen' not in argx) :
         return True
-    elif ('-h' in func_argx or '--man' in func_argx) and '-write_m' not in func_argx and '-testset' not in func_argx:
+    elif ('-h' in func_argx or '--man' in func_argx) and '-write_m' not in func_argx and '-data_gen' not in func_argx:
         return True
 
 
@@ -91,6 +89,11 @@ def creation_soup(argx, inputfile, outfile, flog):
     parameters = [None]*8
     calls = []
     
+    '''
+    Parameters[3] contains the variable for automatic negative set generation...
+    '''
+    parameters[3] = True
+    
     if '-readall' in argx:
         calls.append('-readall')
     if '-extract' in argx:
@@ -104,7 +107,7 @@ def creation_soup(argx, inputfile, outfile, flog):
             try:
                 parameters[1] = int(argx[a+1])
             except Exception:
-                lg_message = "Could not assign input parameter -minid. Type has to be Integer."
+                lg_message = "Could not assign input parameter -minid. Type has to be castable to Integer."
                 e = TypeError(lg_message)
                 flog.write_log(lg_message)
                 raise e
@@ -113,37 +116,28 @@ def creation_soup(argx, inputfile, outfile, flog):
             try:
                 parameters[2] = int(argx[a+1])
             except Exception:
-                lg_message = "Could not assign input parameter -maxid. Type has to be Integer."
+                lg_message = "Could not assign input parameter -maxid. Type has to be castable to Integer."
                 e = TypeError(lg_message)
                 flog.write_log(lg_message)
                 raise e
-        '''
-        elif argx[a] == '-sim':
-            parameters[3] = True
-            
-        elif argx[a] == '-smpl':
+        
+        elif argx[a] == '--no-negative':
+            parameters[3] = False
+        
+        elif argx[a] == '-k':
             try:
-                parameters[4] = int(argx[a+1])
+                parameters[4] = float(argx[a+1])
             except Exception:
-                lg_message = "Could not assign input parameter -smpl. Type has to be Integer."
+                lg_message = "Could not assign input parameter -k. Type has to be castable to float."
                 e = TypeError(lg_message)
                 flog.write_log(lg_message)
                 raise e
-
-        elif argx[a] == '-simsmpl':
-            try:
-                parameters[5] = int(argx[a+1])
-            except Exception:
-                lg_message = "Could not assign input parameter -simsmpl. Type has to be Integer."
-                e = TypeError(lg_message)
-                flog.write_log(lg_message)
-                raise e
-        '''
+        
         elif argx[a] == '-nproc':
             try:
                 parameters[6] = int(argx[a+1])
             except Exception:
-                lg_message = "Could not assign input parameter -nproc. Type has to be Integer."
+                lg_message = "Could not assign input parameter -nproc. Type has to be castable Integer."
                 e = TypeError(lg_message)
                 flog.write_log(lg_message)
                 raise e
@@ -175,6 +169,7 @@ def write_soup(argx, inputfile, outfile, flog):
     '''
     options = [None]*10
     nproc = None
+    recursive_grid = False
     mute, epsilon = False, 0.0
     if outfile != None:
         options[9] = outfile
@@ -271,6 +266,9 @@ def write_soup(argx, inputfile, outfile, flog):
             except Exception as e:
                 print("Could not assign input parameter -e (epsilon). Type has to be (castable to) float.")
                 raise e
+                
+        elif argx[a] == '-r':
+            recursive_grid = True
 
         elif argx[a] == '-mute':
             mute = True
@@ -288,7 +286,7 @@ def write_soup(argx, inputfile, outfile, flog):
                 except Exception as e:
                     raise e
     
-    return options, nproc, mute, epsilon
+    return options, nproc, mute, epsilon, recursive_grid
 
         
 ############################Helper######################################        

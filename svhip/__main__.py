@@ -3,13 +3,13 @@ import os
 import logging
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'testset_cr/')))
+sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'data_gen/')))
 sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'scaling/python/')))
 sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'write_m/')))
 sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'currysoup/')))
 sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'logger/')))
 
-import testset_creation
+import generate_data
 import write_model
 import scaling_config
 from currysoup import *
@@ -67,10 +67,10 @@ def main():
     '''
     Interpret remaining command line:
     '''
-    if '-testset' in argx or '-testset' in func_argx:
+    if '-data_gen' in argx or '-data_gen' in func_argx:
         if len(func_argx) == 0:
-            func_argx = argx[argx.index('-testset')+1:]
-        testset_creation.testset_cr(func_argx, inputfile, outfile, function_log)
+            func_argx = argx[argx.index('-data_gen')+1:]
+        generate_data.testset_cr(func_argx, inputfile, outfile, function_log)
     
     elif '-write_m' in argx or '-write_m' in func_argx:
         if len(func_argx) == 0:
@@ -78,16 +78,12 @@ def main():
         write_model.write_m(func_argx, inputfile, outfile, function_log)
     
     elif '-auto' in argx or '-auto' in func_argx:
+        
         if len(func_argx) == 0:
             func_argx = argx[argx.index('-auto')+1:]
-        testset_creation.testset_cr(func_argx, inputfile, outfile + '.data', function_log)
-        write_model.write_m(func_argx, outfile + '.data', outfile, function_log )
-    
-    elif '-rescale' in argx or '-rescale' in func_argx:
-        #PLACEHOLDER
-        if len(func_argx) == 0:
-            func_argx = argx[a+1]
-        pass
+        
+        generate_data.testset_cr(func_argx, inputfile, outfile + '.dat', function_log)
+        write_model.write_m(func_argx, outfile + '.dat', outfile, function_log )
     
     '''
     Should the used parameters be saved in .configs?

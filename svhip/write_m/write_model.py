@@ -15,11 +15,8 @@ import math
 from svm import *
 from svm import __all__ as svm_all
 from read_input import *
-import scaling_config
 import itertools
-import subprocess
 from currysoup import write_soup
-import logger
 
 ################################# Default parameters ###################
 '''
@@ -219,31 +216,15 @@ def create_grid(c_low, c_up, g_low, g_up, num_c, num_g):
 
     return sorted(itertools.product(cs,gs)), cs, gs
    
-def parameters_grid_search( categories, values, parameters, nproc, mute, epsilon, just_max = False, acc_name = ""):
+def parameters_grid_search(categories, values, parameters, nproc, mute, epsilon, just_max = False, acc_name = "", recursive = False):
     
-    c_low, c_high, g_low, g_high, num_c, num_g, n_folds, nu = parameters            
-    '''
-    Spawn several processes for optimal parameter estimation.
-    Rightn now orients itself according to amount of cpu cores.
-    Getting .apply_async from multiprocessing module to work would
-    be desirable and will be further looked into.
-    '''
+    c_low, c_high, g_low, g_high, num_c, num_g, n_folds, nu = parameters      
+    
     search_grid, c_values, g_values = create_grid(c_low, c_high, g_low, g_high, num_c, num_g)
-
     #cn = (c_high - c_low) / (num_c - 1) / 2
     #gn = (g_high - g_low) / (num_g - 1) / 2
     process_count = nproc
     
-    '''
-    #OPTIONAL ----------------------
-    #Enable for testing: Write us a log for potential later Accuracy plot...
-
-    with open("Accuracy_log_ClanSet3.txt", 'a') as A:
-        A.write("New flanks! Gamma: " + str(g_low) + "; " + str(g_high) + " C: " + str(c_low) + "; " + str(c_high) + "\n")
-        A.write("Grid: \n")
-        for point in search_grid:
-            A.write(str(point[0]) + '; ' + str(point[1])  + '\n')
-    '''
     #Process the grid:
     with multiprocessing.Pool(process_count) as process_pool:
 
@@ -279,31 +260,33 @@ def parameters_grid_search( categories, values, parameters, nproc, mute, epsilon
     '''
 
     smallest_error = max(res_list)
-    #smallest_error = sorted(errors, reverse=True)[0]
-
-
-    '''
-    #OPTIONAL --- For debugging/plotting only
-    with open(acc_name, 'a') as A:
-        for n in range(0, len(res_list)):
-            A.write(str(res_list[n]) + ": " + str(argx[n][3]) + ', '+str(argx[n][4])+ '\n')
-        A.write('\n')
-        A.write("Best acc.: " +  str(smallest_error) + "\n \n")
-    '''
+    err_sorted = sorted(errors, reverse=True)
     
     print("Accuracy: " + str(smallest_error))
     best_c_val, best_g_val = errors.get(smallest_error) 
+    
+    '''
+    If we do not want a recursive grid search, we can return the best parameter pair now. 
+    Good for basic testing.
+    '''
+    if recursive == False:
+        param_dict = {'log_c': int(best_c_val), 'log_gamma': int(best_g_val), 'nu': nu}
+        return smallest_error, param_dict
 
     '''
-    If this is a recursive check to estimate structure of the next grid, only returning the absolute maximum is enough
+    If this is a recursive check to estimate structure of the next grid, 
+    only returning the absolute maximum is enough.
     '''
-
     if just_max is True:
         return max(res_list)
     
     if mute is False:
         print("Smallest error for: C = " + str(best_c_val) + ' gamma = ' + str(best_g_val))
     
+    '''
+    Helper functions to (1) define new flanks for the next recursive grid search and 
+    (2) find the isolated maximum accuracy of the next grid. 
+    '''
     def find_neighbors(point, values):
 
         low, high = point, point
@@ -315,7 +298,7 @@ def parameters_grid_search( categories, values, parameters, nproc, mute, epsilon
                     high = values[i+1]
         return low, high
 
-    def find_deep_maximum(best_acc, res_list, argx, c_values, g_values, n_folds, nu, mute, nproc, categories, values, num_c, num_g, acc_name, epsilon):
+    def find_deep_maximum(best_acc, res_list, argx, c_values, g_values, n_folds, nu, mute, nproc, categories, values, num_c, num_g, acc_name, epsilon, recursive):
 
         deep_accs = []
         cval = 0
@@ -334,10 +317,16 @@ def parameters_grid_search( categories, values, parameters, nproc, mute, epsilon
                 
                 c_high, c_low, g_high, g_low = new_flanks(cval, gval, c_values, g_values)
                 parameters = [c_low, c_high, g_low, g_high, num_c, num_g, n_folds, nu]
-                deep_accs.append(parameters_grid_search( categories, values, parameters, nproc, mute, epsilon, True, acc_name))
+                deep_accs.append(parameters_grid_search( categories, values, parameters, nproc, mute, epsilon, True, acc_name, recursive))
+        
+        '''
+        Now, in case none of the checked sub-grids actually yield any increase 
+        in accuracy, the process can be stopped then and there.
+        '''
+        if max(deep_accs) <= best_acc:
+            return None
         
         deep_index = deep_accs.index(max(deep_accs))
-
         return deep_index                
 
 
@@ -350,47 +339,42 @@ def parameters_grid_search( categories, values, parameters, nproc, mute, epsilon
 
         #c_dist, g_dist are not really needed here, but where used in a test before
         return rc, lc, rg, lg
-   
-    def yield_maximum():
-        pass
 
-    
     '''
     Repeat grid search with closer values until we hit a set threshhold. Else return
     the found final values.
-    '''
-    #c_high, c_low, g_high, g_low = new_flanks(best_c_val, best_g_val, c_values, g_values)
     
-    err_sorted = sorted(errors, reverse=True)
-
-    '''
     Set epsilon to default if 0 or not specified (see /defaults/)
     '''
     if epsilon == 0.0:
         epsilon = default_params.get_epsilon()
 
     '''
-    If errors are all equal, duplicate value to allow for dummy comparison in the next step - otherwise too many redundant if-statements
+    If errors are all equal, duplicate value to allow for dummy comparison in 
+    the next step - otherwise too many redundant if-statements
     '''
-
     if len(err_sorted) == 1:
         err_sorted.append(err_sorted[0])
+        
     '''
     Reiterate grid search with new flanks until maximal error difference of best values is
     below set epsilon:
     '''
-    
     if abs(err_sorted[len(err_sorted) -1] - err_sorted[0]) > epsilon:
-        deep_index = find_deep_maximum(max(res_list), res_list, argx, c_values, g_values, n_folds, nu, mute, nproc, categories, values, num_c, num_g, acc_name, epsilon)
-
+        deep_index = find_deep_maximum(max(res_list), res_list, argx, c_values, g_values, n_folds, nu, mute, nproc, categories, values, num_c, num_g, acc_name, epsilon, recursive)
+        
+        if deep_index is None:
+            param_dict = {'log_c': int(best_c_val), 'log_gamma': int(best_g_val), 'nu': nu}
+            return smallest_error, param_dict
+        
         best_c_val, best_g_val = argx[deep_index][3], argx[deep_index][4]
         c_high, c_low, g_high, g_low = new_flanks(best_c_val, best_g_val, c_values, g_values)
 
         parameters = [c_low, c_high, g_low, g_high, num_c, num_g, n_folds, nu]
-        return parameters_grid_search( categories, values, parameters, nproc, mute, epsilon, False, acc_name)
+        return parameters_grid_search( categories, values, parameters, nproc, mute, epsilon, False, acc_name, recursive)
     
     else:
-        param_dict = {'log_c': best_c_val, 'log_gamma': best_g_val, 'nu': nu}
+        param_dict = {'log_c': int(best_c_val), 'log_gamma': int(best_g_val), 'nu': nu}
         return smallest_error, param_dict
 
 #########################Parse input data###############################
@@ -447,7 +431,7 @@ def create_svm_problem(categories, problem_values):
 def call_svm_trainer(categories, values, param_dict, outfile):
     
     try:
-        cmd = '-s {svm_type} -t {kernel_type} -c {c} -g {g} -n {nu} -b 1'.format(
+        cmd = '-s {svm_type} -t {kernel_type} -c {c} -g {g} -b 1'.format(
             svm_type = 0,
             kernel_type = kernel_type,
             c = param_dict.get('log_c'),
@@ -537,10 +521,11 @@ def main(argx = None, inputfile=None, outfile=None):
     if '-h' in argx or '--man' in argx:
         print_help(this_folder)
         return None
+    
     '''
     Parse function arguments with currysoup module:
     '''
-    options, nproc, mute, epsilon = write_soup(argx, inputfile, outfile, function_log)
+    options, nproc, mute, epsilon, recursive_grid = write_soup(argx, inputfile, outfile, function_log)
 
     '''
     If options for grid search are not specified, default is loaded:
@@ -552,28 +537,25 @@ def main(argx = None, inputfile=None, outfile=None):
         nproc = multiprocessing.cpu_count()
 
     '''
-    Attempt to create problem instance:
+    Attempt to parse training instance set:
     '''
     try:
         categories, values = read_problem_data(inputfile)
     except Exception as e:
-        function_log.write_log(str(e))
+        print("Failed to passe training data set. Is the path valid and are format specifications met?")
+        #function_log.write_log(str(e))
         raise e
-       
-    '''
-    Values are already scaled in this version :
-    '''
-    #values = scale_prob_data(values, ranges)
     '''
     Create grid search and write model:
     '''
-    smallest_error, param_dict = parameters_grid_search(categories, values, options[1:9], nproc, mute, epsilon, False, inputfile.replace('.dat', '.acc') )
+    smallest_error, param_dict = parameters_grid_search(categories, values, options[1:9], nproc, mute, epsilon, False, inputfile.replace('.dat', '.acc'), recursive_grid)
     ret = call_svm_trainer(categories, values, param_dict, options[9])
     if ret == 1:
         print("Process succesfully finished.")
     else:
         lg_message = "Something went wrong. Please check input format and paramter range. Since this is an unspecified error, please inform developer."
-        function_log.write_warning(lg_message) 
+        print(lg_message)
+        #function_log.write_warning(lg_message) 
         raise ValueError(lg_message)
 
 ################################# Misc. ################################
