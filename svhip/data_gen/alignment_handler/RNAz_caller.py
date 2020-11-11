@@ -155,16 +155,12 @@ def parse_alignment_file(filename, count = False):
     Use with Bio.AlignIO
     """
     seq_list = []
-    seq_n = int(list(reversed(filename.split('_')))[1])
+    #seq_n = int(list(reversed(filename.split('_')))[2])
     with open(filename) as align_f:
         alignment = SeqIO.parse(align_f, 'clustal')
         
         for record in alignment:
-            if len(seq_list) < seq_n: 
-                seq_list.append(str(record.seq))
-            else:
-                break
-                
+            seq_list.append(str(record.seq))                
     if count == True:
         return len(seq_list)
     else:

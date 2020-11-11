@@ -43,17 +43,6 @@ def get_cutoff(distances, k_value):
     else:
         return distances_arrange[0]
 
-def append_vector(category, vector, outfile):
-    if vector[0] == 0 and vector[1] == 0:
-        return None
-
-    with open(outfile, 'a') as f:
-        if category == 1:
-            f.write('-1 1:' +str(vector[0]) + ' 2:' + str(vector[1]) + ' 3:' + str(vector[2]) + '\n')
-        else:
-            f.write('1 1:' +str(vector[0]) + ' 2:' + str(vector[1]) + ' 3:' + str(vector[2]) + '\n')
-    pass
-
 def reset_filter(aln_list):
     for a in range(0, len(aln_list)):
         aln_list[a].unmark()

@@ -37,7 +37,7 @@ class window_handle:
             self.native_group = True
             
     def calculate_feature_vector(self):
-        values = extract_data(path) 
+        values = extract_data(self.path) 
         self.z_score = self.scale_z(values[0])
         self.SCI = self.scale_SCI(values[1])
         self.shannon = self.scale_shannon(values[2])
