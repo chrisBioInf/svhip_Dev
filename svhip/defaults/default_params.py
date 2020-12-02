@@ -31,11 +31,13 @@ def get_testset_cr_defaults():
 	default_category = '1'
 	default_minident = 50
 	default_maxident = 98
-	default_simulateAlignment = False
+	default_k = 0.2
 	default_sampleSize = 100
 	default_simulateSampleSize = 1
 	default_num_processes = multiprocessing.cpu_count()
 	default_mute = False
+	default_window_size = 120
+	default_step = 40
 
-	def_test_set_cr = [default_category, default_minident, default_maxident, default_simulateAlignment, default_sampleSize, default_simulateSampleSize, default_num_processes, default_mute]
+	def_test_set_cr = [default_category, default_minident, default_maxident,True,  default_k, default_window_size, default_num_processes, default_mute, default_step]
 	return def_test_set_cr
