@@ -1,11 +1,17 @@
 import sys 
 import os
 import_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
-sys.path.append(import_path)
-sys.path.append(os.path.abspath(os.path.join(import_path, 'libsvm_3_22/python/')))
-sys.path.append(os.path.abspath(os.path.join(import_path, 'defaults/')))
-sys.path.append(os.path.abspath(os.path.join(import_path, 'currysoup/')))
-sys.path.append(os.path.abspath(os.path.join(import_path, 'logger/')))
+
+if import_path not in sys.path:
+    sys.path.append(import_path)
+if 'libsvm_3_22/python' not in sys.path:
+    sys.path.append(os.path.abspath(os.path.join(import_path, 'libsvm_3_22/python/')))
+if 'defaults/' not in sys.path:
+    sys.path.append(os.path.abspath(os.path.join(import_path, 'defaults/')))
+if 'currysoup/'not in sys.path:
+    sys.path.append(os.path.abspath(os.path.join(import_path, 'currysoup/')))
+if 'logger/' not in sys.path:
+    sys.path.append(os.path.abspath(os.path.join(import_path, 'logger/')))
 
 import default_params
 import multiprocessing
@@ -20,22 +26,9 @@ from currysoup import write_soup
 
 ################################# Default parameters ###################
 '''
-These are default parameters, for options not set manually on main() call.
-Feel free to change as needed in defaults/default_params.py. Listed here for
-convenience.
+These initializes some parameters, for options not set manually on main() call.
+Feel free to change as needed in defaults/default_params.py. 
 
-def_c_min = 0.001
-def_c_high = 100000
-def_Gamma_min = 0.001
-def_Gamma_high = 100000
-def_c_num = 20
-def_g_num = 20
-def_Gamma_Base = 2 
-def_C_base = 2 
-svm_class = 0   #c_svc in libsvm param
-def_n_fold = 10 #iterations for cross-validation
-def_nu = 0.5
-def_outf = 'decision.model'
 '''
 C_base = 2
 Gamma_Base = 2
@@ -68,7 +61,7 @@ def gamma_val(gexp):
     return Gamma_Base**gexp
 
 """
-Function to set a few standard parameters, probably soon redundant.
+Function to set a few standard parameters, actually redundant now. 
 """
 def set_parameters(svm_param):
     svm_param.gamma = gamma()
@@ -380,16 +373,17 @@ def parameters_grid_search(categories, values, parameters, nproc, mute, epsilon,
 #########################Parse input data###############################
 """
 
-First function is for processing data gathered with testset_creation.py;
+First function is for processing data gathered with generate_data.py;
 Second one is for manual compilation of categories and problem vectors
 parsed with either read_input.py from RNAz files or concatenation of sets.
 If possible, following the pipeline (first option) is advised.
 """
-def read_problem_data(filename):
+def read_problem_data(filename, function_log = None):
     try:
         problem = svm_read_problem(filename)
     except Exception as e:
-        function_log.write_log(str(e))
+        if function_log != None:
+            function_log.write_log(str(e))
         raise e
     return problem[0], problem[1]
 
@@ -420,11 +414,12 @@ def parse_problem_instance(category_list, input_data):
     return problem_vector
 
 #########################Call libsvm subroutine#########################
-def create_svm_problem(categories, problem_values):
+def create_svm_problem(categories, problem_values, function_log = None):
     try:
         problem_set = svm_problem(categories, problem_values)
     except Exception as e:
-        function_log.write_log(str(e))
+        if function_log is not None:
+            function_log.write_log(str(e))
         raise e
     return problem_set
   
@@ -497,7 +492,7 @@ def call_svm_crossvalidate(argx):
     
     except Exception as e:
         function_log.write_log(str(e))
-        print("Invalid gamma value... Skipping")
+        #print("Invalid gamma value... Skipping")
         return 0.0
     
     return ACC
@@ -513,11 +508,16 @@ def main(argx = None, inputfile=None, outfile=None):
     this_folder = os.path.dirname(os.path.abspath(__file__))
     parameters = svm_parameter()
     
+    """
+    Attempt to load function arguments if none are passed (i.e. direct function
+    call was used. Deprecated, so this will not see much use...)
+    """
     if argx == None:
         argx = sys.argv
-    else:
-        pass
     
+    """
+    Show help document for this specific module:
+    """
     if '-h' in argx or '--man' in argx:
         print_help(this_folder)
         return None
@@ -542,13 +542,15 @@ def main(argx = None, inputfile=None, outfile=None):
     try:
         categories, values = read_problem_data(inputfile)
     except Exception as e:
-        print("Failed to passe training data set. Is the path valid and are format specifications met?")
+        print("Failed to parse training data set. Is the path valid and are format specifications met?")
         #function_log.write_log(str(e))
         raise e
     '''
     Create grid search and write model:
     '''
-    smallest_error, param_dict = parameters_grid_search(categories, values, options[1:9], nproc, mute, epsilon, False, inputfile.replace('.dat', '.acc'), recursive_grid)
+    smallest_error, param_dict = parameters_grid_search(categories, values, options[1:9], 
+                                                        nproc, mute, epsilon, False, 
+                                                        inputfile.replace('.dat', '.acc'), recursive_grid)
     ret = call_svm_trainer(categories, values, param_dict, options[9])
     if ret == 1:
         print("Process succesfully finished.")
