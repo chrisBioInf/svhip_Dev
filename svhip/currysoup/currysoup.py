@@ -86,7 +86,7 @@ def save_configuration(argx, func_argx, inputname):
 ##############Interpretation of testset creation parameters#############
 
 def creation_soup(argx, inputfile, outfile, flog):
-    parameters = [None]*8
+    parameters = [None]*9
     calls = []
     
     '''
@@ -132,6 +132,15 @@ def creation_soup(argx, inputfile, outfile, flog):
                 e = TypeError(lg_message)
                 flog.write_log(lg_message)
                 raise e
+                
+        elif argx[a] == '-w':
+            try:
+                parameters[5] = int(argx[a+1])
+            except Exception:
+                lg_message = "Could not assign parameter -w (windowsize). Value has top be castable to Int."
+                e = TypeError(lg_message)
+                flog.write_log(lg_message)
+                raise e
         
         elif argx[a] == '-nproc':
             try:
@@ -144,6 +153,15 @@ def creation_soup(argx, inputfile, outfile, flog):
                 
         elif argx[a] == '-mute':
             parameters[7] = True
+            
+        elif argx[a] == ' -s ':
+            try:
+                parameters[8] = int(argx[a+1])
+            except Exception:
+                lg_message = "Could not assign parameter -s (stepsize). Has to be castable to Int."
+                e = TypeError(lg_message)
+                flog.write_log(lg_message)
+                raise e
             
         elif argx[a] == '-o':
             if a+1 < len(argx) and isinstance(argx[a+1], str) and outfile == None: 
