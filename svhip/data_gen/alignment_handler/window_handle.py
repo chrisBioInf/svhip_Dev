@@ -105,6 +105,12 @@ class window_handle:
         else:
             return str(-1)
     
+    def is_valid(self):
+        if [self.z_score, self.SCI, self.shannon] != [0.0, 0.0, 0.0] and None not in  [self.z_score, self.SCI, self.shannon]:
+            return True
+        else:
+            return False
+    
     def get_filtered(self):
         return self.filtered
     

@@ -93,8 +93,8 @@ class Alignment_handle:
             call(split(cmd), stdout= outf)
         return Alignment_handle(outpath, native = False)
     
-    def spawn_subalignments(self, min_ident, max_ident, n_proc):
-        align_dict = draw_alignments(self.path, min_ident, max_ident, n_proc, True)
+    def spawn_subalignments(self, min_ident, max_ident, n_proc, window_size=120, step=40):
+        align_dict = draw_alignments(self.path, min_ident, max_ident, n_proc, True, window_size, step)
         for key in align_dict.keys():
             self.windows.append(window_handle(align_dict[key], self.native))
             

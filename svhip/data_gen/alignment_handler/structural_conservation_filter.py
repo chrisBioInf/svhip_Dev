@@ -49,7 +49,9 @@ def reset_filter(aln_list):
     pass
 
 def k_value_filter(aln_native, aln_control, k = 0.2):
+    distances = get_distances(aln_native)
     distance_control = get_distances(aln_control)
+    
     cutoff = get_cutoff(distance_control, k)
     aln_native_filtered = []
     

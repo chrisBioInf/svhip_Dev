@@ -27,16 +27,16 @@ for sequence identity and have length deviation > 65%?
 """
 
 def spawn_alignment(argx):
-    alignment_file, avg_ident, n_seq, align_id, align_n, min_id = argx[0], argx[1], argx[2], argx[3], argx[4], argx[5]
+    alignment_file, avg_ident, n_seq, align_id, align_n, min_id, window_size, step = argx[0], argx[1], argx[2], argx[3], argx[4], argx[5], argx[6], argx[7]
     filename = alignment_file + '_align_' +  str(n_seq)+'_'+str(align_n)
-    command_line = 'rnazWindow.pl --min-id=' + str(min_id) +' --opt-id='+str(avg_ident)+' -s 40 --no-reference --min-seqs='+str(n_seq)+' --max-gap=25 --max-seqs='+str(n_seq)+' '+str(alignment_file)
+    command_line = 'rnazWindow.pl --min-id=' + str(min_id) +' --opt-id='+str(avg_ident)+' -s ' + str(step)+ ' -w ' + str(window_size) + ' --no-reference --min-seqs='+str(n_seq)+' --max-gap=25 --max-seqs='+str(n_seq)+' '+str(alignment_file)
     arg_param = shlex.split(command_line)
     align_file = open(filename, 'w')
     call(arg_param, stdout = align_file)
     align_file.close()
     return [filename ,argx[3]]
     
-def draw_alignments(alignment_file, min_ident, max_ident, num_processes, mute):
+def draw_alignments(alignment_file, min_ident, max_ident, num_processes, mute, window_size, step):
     align_dict = {}
     argx_list = []
     
@@ -50,7 +50,7 @@ def draw_alignments(alignment_file, min_ident, max_ident, num_processes, mute):
             align_id = 'align_'+str(n)+'_'+str(i+1)
             seq_n = n
             align_n = i
-            argx_list.append([alignment_file, avg_ident, seq_n, align_id, align_n +1, min_ident])
+            argx_list.append([alignment_file, avg_ident, seq_n, align_id, align_n +1, min_ident, window_size, step])
     
     with multiprocessing.Pool(num_processes) as pool:
         align_list = pool.map(spawn_alignment, argx_list)
