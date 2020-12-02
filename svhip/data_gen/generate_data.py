@@ -37,6 +37,8 @@ from plotter import *
 #from cleanup import clean_dir
 from time_clock import timer
 import numpy as np
+from pandas import DataFrame
+from pandas import Series
 
 #########################Default parameters#############################
 """
@@ -397,7 +399,39 @@ def write_data(windows, outfilename):
             +' 3:'+str(vector_array[i][3])+'\n')
             
     return 1 
+
+############################Pandas data structure interface ################
+
+def as_data_frame(vector_array):
     
+    '''
+    Takes an array of feature vectors and gives us a nice Pandas data frame.
+    ...Currently not used except for testing/plotting.
+    '''
+    vector_array_T = np.transpose(vector_array)
+    vector_dict = {
+            'category' : vector_array_T[0],
+            'SCI' : vector_array_T[1],
+            'z-Score' : vector_array_T[2],
+            'Shannon-Entropy' : vector_array_T[3]
+            }
+    
+    feature_df = DataFrame(data = vector_dict)
+    return feature_df
+
+def as_series(vector_array):
+    '''
+    Takes an array of feature vectors and turns them into series. Simple.
+    ...Currently not used except for testing/plotting.
+    '''
+    vector_array_T = np.transpose(vector_array)
+    category_series = Series(data = vector_array_T[0])
+    sci_series = Series(data = vector_array_T[1])
+    z_series = Series(data = vector_array_T[2])
+    entropy_series = Series(data = vector_array_T[3])
+    
+    return category_series, sci_series, z_series, entropy_series
+
 ############################File verification###############################
 """
 A helper function that checks if a file is empty. SISSIz mucks up sometimes.
