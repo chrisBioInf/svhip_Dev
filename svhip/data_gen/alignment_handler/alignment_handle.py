@@ -25,12 +25,20 @@ class Alignment_handle:
     seq_dict = {}
     windows = []
     
-    def __init__(self, path, native):
-        self.seq_dict = read_fa(path)
-        self.path = path
-        #self.remove_all_gaps()
-        self.identifier = path.split('/')[-1]
-        self.native = native
+    def __init__(self, path, native, function_log =None):
+        try:
+            self.seq_dict = read_fa(path)
+            self.path = path
+            #self.remove_all_gaps()
+            self.identifier = path.split('/')[-1]
+            self.native = native
+        except Exception as e:
+            mssg = "Failed to initialize Alignment handle. Please recheck file. Path: " + str(path) + '\n'
+            print(mssg)
+            if function_log is not None:
+                function_log.write_log(str(e))
+                function_log.write_log(mssg)
+            raise e
     
     def remove_gaps(self, sequence):
         return sequence.replace('-', '')
@@ -76,6 +84,7 @@ class Alignment_handle:
         cline = ClustalwCommandline("clustalw2", infile = self.path, outfile = outpath)
         cline()
         self.path = outpath
+        self.seq_dict = read_fa(path)
     
     def update_file(self):
         with open(self.path, 'w+') as outf:
