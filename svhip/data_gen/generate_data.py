@@ -64,7 +64,7 @@ called by main() once input cmd line is parsed. For options please see
 section 'main function call' below.
 """
 
-def create_training_set(filename, param, outfilename, gen_neg = 0):
+def create_training_set(filename, param, outfilename, gen_neg = 0, function_log = None):
     
     """
     Unpack function parameters - recent changes have made this somewhat messy. 
@@ -87,7 +87,7 @@ def create_training_set(filename, param, outfilename, gen_neg = 0):
     I/O operations and sequence/set manipulation. 
     See alignment_handler/alignment_handle.py for functions used. 
     '''    
-    aln = Alignment_handle(filename, native = True)
+    aln = Alignment_handle(filename, True, function_log)
     aln.remove_all_gaps()
     aln.ident_Filter(maxid, n_proc, mute)
     aln.realign_me()
@@ -108,6 +108,7 @@ def create_training_set(filename, param, outfilename, gen_neg = 0):
     for i in range(0, len(aln.windows)):
         cw = aln.windows[i].generate_control_alignment()
         if verify_file(cw.path) is False:
+            function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
             continue
         control_alignments.append(cw)
         
@@ -121,7 +122,6 @@ def create_training_set(filename, param, outfilename, gen_neg = 0):
     '''
     
     aln_native, aln_negative = k_value_filter(aln.windows, control_alignments, k)
-    print(aln_native)
     '''
     Calculate feature vectors and save them in a .dat file. 
     '''
@@ -235,18 +235,17 @@ def main(argx=None, inputfile=None, outfile=None, function_log = None):
                                 parameters[0] = '-1'
                                 if parameters[7] == False:
                                     print('Reading File: ' + str(in_path + str(lin_block[1]).replace('\n', '')))
-                                ret_val = create_training_set(in_path + str(lin_block[1]).replace('\n', ''), parameters, outfile, gen_neg = 0)
+                                ret_val = create_training_set(in_path + str(lin_block[1]).replace('\n', ''), parameters, outfile, 0, function_log)
                             else:
                                 parameters[0] = '1'
                                 if parameters[7] == False:
                                     print('Reading File: ' + str(in_path + str(lin_block[1]).replace('\n', '')))
-                                ret_val = create_training_set(in_path + str(lin_block[1]).replace('\n', ''), parameters, outfile, gen_neg = 0)
+                                ret_val = create_training_set(in_path + str(lin_block[1]).replace('\n', ''), parameters, outfile, 0, function_log)
                     if parameters[7] == False:
                         print("End of input file reached. Data sets observed: " + str(cc))
                     if ret_val == 1:
                         if parameters[7] == False:
                             print("Process complete. Output written to " + str(outfile))
-                            print("Process complete. Scaling range written to " + str(outfile)+ ' .scal')
                         return True
                     else:
                         lg_message = "Something went wrong. Please check input format. Since this is an unspecified error, please inform developer."
@@ -272,9 +271,9 @@ def main(argx=None, inputfile=None, outfile=None, function_log = None):
             
             for f in worktree:
                 if auto_gen is True:
-                    create_training_set(f, parameters, outfile, 1)
+                    create_training_set(f, parameters, outfile, 1, function_log)
                 else:
-                    create_training_set(f, parameters, outfile, gen_neg = 0)
+                    create_training_set(f, parameters, outfile, 0, function_log)
             ret_val = 1
             
         else:
@@ -295,10 +294,10 @@ def main(argx=None, inputfile=None, outfile=None, function_log = None):
     
     else:
         if auto_gen is False:
-            create_training_set(inputfile, parameters, outfile, gen_neg = 0)
+            create_training_set(inputfile, parameters, outfile, 0, function_log)
             ret_val = 1
         else:
-            create_training_set(inputfile, parameters, outfile, 1)
+            create_training_set(inputfile, parameters, outfile, 1, function_log)
             ret_val = 1
     '''
     The return value of create_training_set function specifies if an output
@@ -314,6 +313,7 @@ def main(argx=None, inputfile=None, outfile=None, function_log = None):
             function_log.write_warning(lg_message)
             print(lg_message)
         ''' 
+        function_log.write_log("Process exited normally. \n")
         return None
     else:
         lg_message = "Something went wrong. Please check input format. Since this is an unspecified error, please inform developer."
@@ -438,7 +438,6 @@ A helper function that checks if a file is empty. SISSIz mucks up sometimes.
 """
 
 def verify_file(filename):
-
     if os.path.getsize(filename) == 0:
         lg_message = "WARNING: Could not create valid randomized alignment (empty file). Skipping, but rfam alignment should be rechecked."
         print(lg_message)
@@ -455,7 +454,7 @@ if __name__ == '__main__':
     
 def testset_cr(argx = None, inputfile=None, outfile=None, flog=None, t=None):
     
-    global function_log
+    #global function_log
     function_log = flog
-    main(argx, inputfile, outfile)
+    main(argx, inputfile, outfile, function_log)
     return 1
