@@ -9,6 +9,8 @@ Created on Thu Dec  3 07:42:06 2020
 from Bio import SeqIO
 from Bio.Align.Applications import ClustalwCommandline
 from Bio import AlignIO
+import tree_edit_distance as dist
+import RNA
 
 #from RNAz_caller import *
 #from window_handle import window_handle
@@ -81,6 +83,7 @@ class AlignmentFrame:
         
         
     def read_fa(self, filename):
+        print(filename )
         try:
             seq_dict = {}
             records = SeqIO.parse(filename, "fasta")
@@ -92,7 +95,8 @@ class AlignmentFrame:
             for record in records:
                 seq_dict[str(record.id)] = str(record.seq)
             return seq_dict
-        except Exception:
+        except Exception as e:
+            print(e)
             print("Invalid input file format detected. Neither fasta nor clustal alignment?")
     
     
@@ -147,7 +151,7 @@ class AlignmentFrame:
     
     ###########################################################################
     """
-    Sequence manipulation:
+    Sequence manipulation / distance estimation:
         
     """
     ###########################################################################
@@ -181,6 +185,39 @@ class AlignmentFrame:
         
         ident = (1 - levenshtein(str1, str2)/max(len(str1), len(str2))) *100
         return ident
+    
+    def sequence_structural_distance(self, seq1, seq2):
+        
+        return dist.calculate_tree_edit_dist(seq1, seq2)
+    
+    def structural_distance(self, position1 = 0, position2 = 1 ):
+        
+        if type(position1) is int and type(position2) is int:
+            seq1 = self.remove_gaps(self.aln_frame['Sequence'].iloc[position1])
+            seq2 = self.remove_gaps(self.aln_frame['Sequence'].iloc[position2])
+            
+            return self.sequence_structural_distance(seq1, seq2)
+        
+        if type(position1) is str and type(position2) is str:
+            index1 = self.find('Seq ID', position1)
+            index2 = self.find('Seq ID', position2)
+            seq1 = self.remove_gaps(self.aln_frame['Sequence'].iloc[index1])
+            seq2 = self.remove_gaps(self.aln_frame['Sequence'].iloc[index2])
+            
+            return self.sequence_structural_distance(seq1, seq2)
+    
+    def mean_structural_distance(self):
+        
+        distances = []
+        
+        for i in range(0, len(self.aln_frame['Sequence']) -1):
+            for a in range(i + 1, len(self.aln_frame['Sequence'])):
+                
+                seq1 = self.aln_frame['Sequence'].iloc[i]
+                seq2 = self.aln_frame['Sequence'].iloc[a]
+                distances.append(self.sequence_structural_distance(seq1, seq2))
+        
+        return Series(data = distances).mean()
     
     def find(self, columnlabel, position):
         
@@ -246,6 +283,38 @@ class AlignmentFrame:
             return self.remove_gaps(seq)
         else:
             return seq
+        
+    def random_subset(self, n = 1, put_back = True):
+        
+        return self.aln_frame.sample(n = n, replace = put_back)
+    
+    def fold_sequence(self, seq):
+        compound = RNA.fold_compound(seq)
+        mfe_struct, mfe = compound.mfe()
+        return mfe_struct
+    
+    def fold(self, position = 0):
+        if type(position) is int:
+            seq = self.aln_frame['Sequence'].iloc[position]
+            return self.fold_sequence(seq)
+        
+        elif type(position) is str:
+            index = self.find('Seq ID', position)
+            seq = self.aln_frame['Sequence'].iloc[index]
+            return self.fold_sequence(seq)
+            
+        else:
+            e = ValueError("Positional argument has to be given (either sequence index or ID)!")
+            raise e 
+    
+    def fold_all(self):
+        
+        structures = []
+        
+        for i in range(0, len(self.aln_frame['Sequence'])):
+            structures.append(self.fold( position = i ))
+            
+        return Series( data = structures )
     
     ###########################################################################
     """
@@ -321,6 +390,11 @@ class AlignmentFrame:
         self.add_C_column()
         self.add_G_column()
         self.add_U_column()
+        
+        
+    def add_structure_column(self):
+        struct_series = self.fold_all()
+        self.aln_frame['Structure'] = struct_series
         
     def get_dinucleotide_count(self, seq):
         if '-' not in seq:
@@ -402,6 +476,19 @@ class AlignmentFrame:
     
     def get_cg_series(self):
         return self.aln_frame['CG Content']
+    
+    def get_structures(self, new_column = True):
+        
+        if 'Structure' in self.aln_frame:
+            return self.aln_frame['Structure']
+        
+        elif new_column is True:
+            self.add_structure_column()
+            return self.aln_frame['Structure']
+        
+        else:
+            series = self.fold_all()
+            return series 
     
     def get_partial_frame(self, keywords):
         
@@ -746,14 +833,18 @@ TESTING:
 """
 #############################################################################
 
-af = AlignmentFrame('testing/test_1.fa.clw2')
+af = AlignmentFrame('testing/test_1.fa')
 af.print_more()
 
+af.add_structure_column()
 
+print(af.get_structures())
+
+#subset = af.random_subset(10, True)
+#print(subset['Sequence'])
 #af.highlight_CG()
 #af.highlight_subsequence("GGGG")
 
-#print(color.RED + "hello friends" + color.END)
 '''
 #####TEST SEQUENCE RETRIVAL:
 
