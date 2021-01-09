@@ -1,96 +1,17 @@
 import os
-import sys 
-import testset_creation as tc 
-import statistics
+import sys
 import math
 import random
 import matplotlib.pyplot as plt
+from alignment_handler.window_handle import window_handle
 
-class window_handle:
-    
-    identifier = ""
-    native_group = False
-    seqs = []
-    tree_edit_distance = 0
-    z_score = 0.0
-    SCI = 0.0
-    shannon = 0.0
-    filtered = 0
-    
-    def __init__(self, path, native):
-        self.identifier = path.split('/')[-1]
-        self.seqs = tc.parse_alignment_file(path)
-        self.tree_edit_distance = tc.calc_dist_mean(self.seqs)
-        '''
-        values = tc.extract_data(path)
-        self.z_score = self.scale_z(values[0])
-        self.SCI = self.scale_SCI(values[1])
-        self.shannon = self.scale_shannon(values[2])
-        '''
-        self.filtered = 0
-        if native is False:
-            self.native_group = False
-        else:
-            self.native_group = True
-    
-    def linear_scale(self, base, minimum, maximum):
-        from_ = -1.0
-        to_ = 1.0
-        return from_+(to_ -from_)*(base -minimum)/(maximum - minimum)
-    
-    def scale_z(self, z_base):
-        min_z, max_z = -8.15, 2.01
-        if z_base is not None:
-            if z_base > max_z:
-                z_base = max_z
-            elif z_base < min_z:
-                z_base = min_z
-    
-            return self.linear_scale(z_base, min_z, max_z)
-    
-        else:
-            return 0.0
+'''
+Currently not used as functionality was moved.
 
-    def scale_SCI(self, SCI_base): 
-        min_SCI, max_SCI = 0.0, 1.29
-    
-        if SCI_base is not None:
-            if SCI_base > max_SCI:
-                SCI_base = max_SCI
-            elif SCI_base < min_SCI:
-                SCI_base = min_SCI
-    
-            return self.linear_scale(SCI_base, min_SCI, max_SCI)
-        else:
-            return 0.0
+Scheduled for removal, for now kept as reference.
 
-    def scale_shannon(self, shannon_base):
-        min_shannon, max_shannon = 0.0, 1.2878
-    
-        if shannon_base is not None:
-            if shannon_base > max_shannon:
-                shannon_base = max_shannon
-            elif shannon_base < min_shannon:
-                shannon_base = min_shannon
-    
-            return self.linear_scale(shannon_base, min_shannon, max_shannon)
-        else:
-            return 0.0
+'''
 
-    def get_distance(self):
-        return self.tree_edit_distance
-
-    def get_vector(self):
-        return [self.z_score, self.SCI, self.shannon]
-    
-    def get_filtered(self):
-        return self.filtered
-    
-    def mark_filtered(self):
-        self.filtered = 1
-
-    def unmark(self):
-        self.filtered = 0
 
 def get_control_group(directory):
     ls = []
@@ -163,7 +84,7 @@ def k_value_filter(aln_native, aln_control, k, outfile):
     reset_filter(aln_native)
 
 def main(path, k_arrange, outfile):
-    #aln_native = get_native_group(path)
+    aln_native = get_native_group(path)
     #aln_native = get_native_group("non_filtered_control_group")
     #aln_control = get_control_group(path)
     aln_control = get_control_group("exp_1/set_1")

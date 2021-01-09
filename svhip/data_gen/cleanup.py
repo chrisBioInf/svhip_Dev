@@ -3,10 +3,8 @@
 """
 Created on Sat Apr 25 15:58:57 2020
 
-@author: christoktopus
-
-
 A helper script that deletes all temporary alignment window files
+--- currently not used.
 """
 import os
 

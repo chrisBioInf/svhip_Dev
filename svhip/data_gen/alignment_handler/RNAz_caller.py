@@ -29,7 +29,7 @@ for sequence identity and have length deviation > 65%?
 def spawn_alignment(argx):
     alignment_file, avg_ident, n_seq, align_id, align_n, min_id, window_size, step = argx[0], argx[1], argx[2], argx[3], argx[4], argx[5], argx[6], argx[7]
     filename = alignment_file + '_align_' +  str(n_seq)+'_'+str(align_n)
-    command_line = 'rnazWindow.pl --min-id=' + str(min_id) +' --opt-id='+str(avg_ident)+' -s ' + str(step)+ ' -w ' + str(window_size) + ' --no-reference --min-seqs='+str(n_seq)+' --max-gap=25 --max-seqs='+str(n_seq)+' '+str(alignment_file)
+    command_line = 'rnazWindow.pl --min-id=' + str(min_id) + ' --opt-id='+str(avg_ident)+' -s ' + str(step)+ ' -w ' + str(window_size) + ' --no-reference --min-seqs='+str(n_seq)+' --max-gap=25 --max-seqs='+str(n_seq)+' '+str(alignment_file)
     arg_param = shlex.split(command_line)
     align_file = open(filename, 'w')
     call(arg_param, stdout = align_file)

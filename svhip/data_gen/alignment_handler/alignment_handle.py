@@ -3,6 +3,7 @@ from Bio.Align.Applications import ClustalwCommandline
 from Bio import AlignIO
 
 from RNAz_caller import *
+from parse.read_fasta import read_fa
 from window_handle import window_handle
 import sys
 from os import path
@@ -11,6 +12,8 @@ import numpy as nump
 import multiprocessing
 from subprocess import call
 from shlex import split
+
+from alignment_frame import AlignmentFrame
 
 import_path = path.abspath(path.join(path.dirname(path.abspath(__file__)), pardir))
 sys.path.append(path.abspath(path.join(import_path, 'parser/')))
@@ -39,6 +42,11 @@ class Alignment_handle:
                 function_log.write_log(str(e))
                 function_log.write_log(mssg)
             raise e
+
+    '''
+    Helper Functions for removal of gaps in contained sequences.
+    Necessary for pair-wise identity check.
+    '''
     
     def remove_gaps(self, sequence):
         return sequence.replace('-', '')
@@ -47,6 +55,15 @@ class Alignment_handle:
         for key in self.seq_dict:
             tmp = self.remove_gaps(self.seq_dict[key])
             self.seq_dict[key] = tmp
+
+    '''
+    Identity filter, removes all sequences from the alignment with pairwise identity > maxident
+    for at least one other sequence. 
+    Removal operation prioritizes the earlier sequence. 
+    
+    File is updated afterwards - therefore, a new outpath should be set if the original
+    file should be left untouched. 
+    '''
 
     def ident_Filter(self, maxident, num_processes, mute):
         #key_matrix = split_keys(seq_dict, num_processes)
@@ -94,6 +111,14 @@ class Alignment_handle:
         #Most applications will require a manual call of realign_me()!        
                 
         #self.realign_me()
+
+    '''
+    Caller Function for SISSIz: Generates a simulated alignment with comparable
+    sequence composition. 
+    Function parameters are the result of testing und should not be changed too much. 
+    (Though increasing --flanks value can sometimes fix a crash on very large alignments
+    - at the cost of run time.)
+    '''
         
     def generate_control_alignment(self):
         outpath = self.path.replace(".clw2" , "") + ".random"
@@ -101,6 +126,15 @@ class Alignment_handle:
             cmd = "SISSIz -n 1 -s --flanks 1750 " + self.path
             call(split(cmd), stdout= outf)
         return Alignment_handle(outpath, native = False)
+
+    '''
+    Calls the 'draw_alignments()' function of the RNAz_caller submodule. This handles the
+    automated generation of overlapping alignment windows. 
+    window_size --> target alignment length
+    step --> target shift between individual windows
+    n_proc --> available processor count (external function call sets it to available cores -1 if none are set)
+    min-/max-ident --> target pairwise identity of sequences in windows
+    '''
     
     def spawn_subalignments(self, min_ident, max_ident, n_proc, window_size=120, step=40):
         align_dict = draw_alignments(self.path, min_ident, max_ident, n_proc, True, window_size, step)
@@ -109,6 +143,17 @@ class Alignment_handle:
             
     def return_windows(self):
         return self.windows
+
+    '''
+    Exporter for the more elaborate AlignmentFrame class, which has a lot more functionality
+    for statistics and data analysis:
+    
+    (Remember to catch the exported Object somewhere). 
+    '''
+
+    def export_as_frame(self):
+        frame =  AlignmentFrame( self.path )
+        return frame
 
 ##############################################################################
 """

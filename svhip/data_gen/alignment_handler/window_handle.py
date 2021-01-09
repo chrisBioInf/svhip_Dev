@@ -13,6 +13,19 @@ from RNAz_caller import extract_data
 from subprocess import call
 from shlex import split
 
+''' 
+This class handles the individual alignment windows generated from input alignments.
+Originally it was the same class as the alignment_handle, but ultimately there
+is no need for much of the function included in alignment_handle and
+vice versa. 
+
+The class itself is relatively light-weight and final, not much to change here.
+'''
+
+min_z, max_z = -8.15, 2.01
+min_SCI, max_SCI = 0.0, 1.29
+min_shannon, max_shannon = 0.0, 1.2878
+
 class window_handle:
     
     identifier = ""
@@ -41,13 +54,29 @@ class window_handle:
         self.z_score = self.scale_z(values[0])
         self.SCI = self.scale_SCI(values[1])
         self.shannon = self.scale_shannon(values[2])
-        
+
+    '''
+      Caller Function for SISSIz: Generates a simulated alignment with comparable
+      sequence composition. 
+      Function parameters are the result of testing und should not be changed too much. 
+      (Though increasing --flanks value can sometimes fix a crash on very large alignments
+      - at the cost of run time.)
+    '''
+
     def generate_control_alignment(self):
         outpath = self.path + ".random"
         with open(outpath, "w+") as outf:
             cmd = "SISSIz -n 1 -s --flanks 1750 " + self.path
             call(split(cmd), stdout= outf)
         return window_handle(outpath, native = False)
+
+
+    '''
+    Scaling is pretty straighforward - calculated values are normalized to a range of [-1  1] using the 
+    minima/maxima extracted from the RNAz source code.
+    
+    Should the need arise, they may be changed at the top of the file.   
+    '''
     
     def linear_scale(self, base, minimum, maximum):
         from_ = -1.0
@@ -55,7 +84,7 @@ class window_handle:
         return from_+(to_ -from_)*(base -minimum)/(maximum - minimum)
     
     def scale_z(self, z_base):
-        min_z, max_z = -8.15, 2.01
+
         if z_base is not None:
             if z_base > max_z:
                 z_base = max_z
@@ -67,8 +96,7 @@ class window_handle:
         else:
             return 0.0
 
-    def scale_SCI(self, SCI_base): 
-        min_SCI, max_SCI = 0.0, 1.29
+    def scale_SCI(self, SCI_base):
     
         if SCI_base is not None:
             if SCI_base > max_SCI:
@@ -81,7 +109,6 @@ class window_handle:
             return 0.0
 
     def scale_shannon(self, shannon_base):
-        min_shannon, max_shannon = 0.0, 1.2878
     
         if shannon_base is not None:
             if shannon_base > max_shannon:

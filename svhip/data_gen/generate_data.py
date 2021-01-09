@@ -35,7 +35,7 @@ from currysoup import creation_soup
 #import logger
 from plotter import *
 #from cleanup import clean_dir
-from time_clock import timer
+#from time_clock import timer
 import numpy as np
 from pandas import DataFrame
 from pandas import Series
