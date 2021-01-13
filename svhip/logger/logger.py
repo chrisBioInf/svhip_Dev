@@ -62,7 +62,7 @@ class log_handler:
                 lg.write('Argument loaded from config file: ' + ' '.join(func_argx) +'\n')
             lg.write('\n')
         
-        return log_name
+        return os.path.abspath(log_name)
     
     def designate_secondary_log_dir(self, argx):
         if '-o' in argx and (argx.index('-o')+1 < len(argx)):

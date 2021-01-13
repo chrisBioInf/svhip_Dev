@@ -6,14 +6,10 @@ if import_path not in sys.path:
     sys.path.append(import_path)
 if 'libsvm_3_22/python' not in sys.path:
     sys.path.append(os.path.abspath(os.path.join(import_path, 'libsvm_3_22/python/')))
-if 'defaults/' not in sys.path:
-    sys.path.append(os.path.abspath(os.path.join(import_path, 'defaults/')))
-if 'currysoup/'not in sys.path:
-    sys.path.append(os.path.abspath(os.path.join(import_path, 'currysoup/')))
 if 'logger/' not in sys.path:
     sys.path.append(os.path.abspath(os.path.join(import_path, 'logger/')))
 
-import default_params
+import defaults.default_params as default_params
 import multiprocessing
 from decimal import Decimal
 from svmutil import *
@@ -22,7 +18,7 @@ from svm import *
 from svm import __all__ as svm_all
 from read_input import *
 import itertools
-from currysoup import write_soup
+from currysoup.currysoup import write_soup
 
 ################################# Default parameters ###################
 '''
@@ -60,116 +56,6 @@ def C_val(cexp):
 def gamma_val(gexp):
     return Gamma_Base**gexp
 
-"""
-Function to set a few standard parameters, actually redundant now. 
-"""
-def set_parameters(svm_param):
-    svm_param.gamma = gamma()
-    svm_param.kernel_type = kernel_type
-    svm_param.svm_type = svm_class
-    return svm_param
-    
-################################## Scaling #############################
-"""
-SVM values taken into consideration are scaled to interval [-1, 1] - 
-therefore the following functions have to be called before writing.
-Modeled after scaling algorithm in RNAz.svm_helper.c i.e. training range
-is assumed as absolute range.
-Currently already handled by testset creation, to be deleted in final version.
-This redundant function will be kept for now as it may still serve a 
-purpose in testing.
-
-"""
-
-def scale_z(z_base, z_range):
-
-    return float(2*((z_base -z_range[0])/(z_range[1] -z_range[0])) -1)
-
-def scale_SCI(SCI_base, SCI_range): 
-
-    return float(2*((SCI_base -SCI_range[0])/(SCI_range[1] -SCI_range[0])) -1)
-        
-def scale_shannon(shannon_base, shannon_range):
-
-    return float(2*((shannon_base -shannon_range[0])/(shannon_range[1] -shannon_range[0])) -1)
-        
-def scale_prob_data(dict_list, ranges):
-    for dic in dict_list:
-        dic[1]= scale_z(dic.get(1), ranges[0]) 
-        dic[2]= scale_SCI(dic.get(2), ranges[1])
-        dic[3]= scale_shannon(dic.get(3), ranges[2])
-    return dict_list
-        
-def scale_vector(data_vector):
-    hold_value = 0
-    for i in range(0, len(data_vector)):
-        hold_value = scale_z(data_vector[i][0])
-        data_vector[i][0] = hold_value
-        hold_value = scale_SCI(data_vector[i][1])
-        data_vector[i][1] = hold_value
-        hold_value = scale_shannon(data_vector[i][2])
-        data_vector[i][2] = hold_value
-    return data_vector
-
-################################# Secondary function call ################
-"""
-NOT FOR USE RIGHT NOW. !!!!!!!!!!!!!!!!!!!
-
-Alternative to main function, not fully implemented. Main use is giving a second
-entrypoint for data tupels that were not parsed using the testset_creation
-pipeline. 
-With restructuring of package will probably be discarded soon, as no practical use case could be found.
-The curse of spontaneous ideas.
-
-#Each Data point has to be handed over as a 3-tuple of float (class, z-score, SCI, Shannon-Entropy). The
-#Scores will have to be normalized. If parameters are to be set manually, they will have to be in dictionary form. The whole
-#data vector has to be a list of these tuples.
-"""
-def write_model(categories, data_vector, name, parameters=None):
-
-    if parameters== None:
-        parameters_list = set_parameters(svm_parameter())
-    elif isinstance(parameters, dict):
-        parameters_list = svm_parameter()
-        try:
-            parameters_list.kernel_type = parameters.get('kernel_type')
-            parameters_list.svm_type = parameters.get('svm_class')
-            parameters_list.gamma = parameters.get/homes/brauerei/christopher/WorkspaceRNAz/package/testenvir/testing/svhip_dev/svhip/write_m('gamma')
-            parameters_list.C = parameters.get('c_value')
-        except KeyError:
-            print('Paramters list given is incomplete.')
-    else:
-        print('Invalid parameter list given. Fallback to default.')
-        parameters_list = set_parameters(svm_parameter())
-    
-    if not isinstance(data_vector, (list, tuple)):
-        print("Invalid data input - cannot be parsed. Data vector has to be of type list.")
-    else:
-        for i in range(0, len(data_vector)):
-            if not isinstance(data_vector[i], (list,tuple)):
-                print("Invalid data input - cannot be parsed. Each Data point has to be handed over as a 3-tuple of float of format (z-score, SCI, Shannon-Entropy).")
-                sys.exit(1)
-            elif len(data_vector[i]) != 3:
-                print("Invalid data input - cannot be parsed. Each Data point has to be handed over as a 3-tuple of float of format (z-score, SCI, Shannon-Entropy).")
-                sys.exit(1)
-            else:
-                for a in range(0, 3):
-                    if not isinstance(data_vector[i][a], float):
-                        print('Invalid format in data tuple. Input values have to be float.')
-                        sys.exit(1)
-                    else:
-                        continue
-    
-    #Scaling:
-    data_scaled = scale_vector(data_vector)
-    
-    #############Call actual svm subroutines############################
-    problem_vector = parse_problem_instance(categories, data_scaled)
-    svm_problem_instance = create_svm_problem(problem_vector[0], problem_vector[1])
-    #m = call_svm_trainer(svm_problem, parameters_list)
-    m = call_svm_crossvalidate(svm_problem_instance, parameters_list, n_fold)
-    
-    svm_save_model(str(name), m)
 
 ##############################Parameter search grid#####################
 """

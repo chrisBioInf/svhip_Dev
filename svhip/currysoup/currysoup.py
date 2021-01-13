@@ -29,13 +29,13 @@ def designate_inputfile(argx, func_argx, flog):
         lg_message = "FATAL: Input parameter is required. Use -h for more info."
         e = ValueError(lg_message)
         flog.write_log(lg_message)
-        raise e
+        return ""
     
     elif (('-i' not in argx) or (argx.index('-i')+1 >= len(argx))):
-        return None
+        return ""
     
     elif os.path.isdir(argx[argx.index('-i')+1]):
-        return argx[argx.index('-i')+1]
+        return os.path.abspath(argx[argx.index('-i')+1])
     
     else:
         proc_path = os.getcwd()
@@ -43,7 +43,7 @@ def designate_inputfile(argx, func_argx, flog):
             return os.path.abspath(os.path.join(proc_path, argx[argx.index('-i')+1]))
         except Exception as e:
             flog.write_log(str(e))
-            raise e
+            return ""
 
 
 def designate_outputfile(argx, func_argx, inputname, flog):
@@ -51,15 +51,15 @@ def designate_outputfile(argx, func_argx, inputname, flog):
         lg_message = "FATAL: Output parameter is set but no argument given. View -h for more info."
         e = ValueError(lg_message)
         flog.write_log(lg_message)
-        raise e
+        return ""
     
     elif ('-o' in argx) and (argx.index('-o')+1 < len(argx)):
         out_arg = argx[argx.index('-o')+1]
         if os.path.isdir(argx[argx.index('-o')+1]):
-            return argx[argx.index('-o')+1]
+            return os.path.abspath(argx[argx.index('-o')+1])
         else:
             proc_path = os.getcwd()
-            return os.path.join(proc_path, out_arg)
+            return os.path.abspath(os.path.join(proc_path, out_arg))
     
     #If there is no '-o' designation, use default as fallback:
     elif inputname is not None: 
@@ -69,9 +69,9 @@ def designate_outputfile(argx, func_argx, inputname, flog):
             return os.path.join(proc_path, input_shlex[len(input_shlex)-1])
         except Exception as e:
             flog.write_log(str(e))
-            raise e
+            return ""
     else:
-        return None
+        return ""
     
 def save_configuration(argx, func_argx, inputname):
     if len(argx) < argx.index('-svcfg')+1 or is_parameter(argx[argx.index('-svcfg')+1]):
@@ -164,12 +164,12 @@ def creation_soup(argx, inputfile, outfile, flog):
                 raise e
             
         elif argx[a] == '-o':
-            if a+1 < len(argx) and isinstance(argx[a+1], str) and outfile == None: 
+            if a+1 < len(argx) and isinstance(argx[a+1], str):
                 outfile = str(argx[a+1])
             else:
                 raise TypeError("Inavlid output filename or outfile already given.")
         elif argx[a] == '-i':
-            if a+1 < len(argx) and isinstance(argx[a+1], str) and inputfile == None: 
+            if a+1 < len(argx) and isinstance(argx[a+1], str):
                 inputfile = str(argx[a+1])
             else:
                 raise TypeError("Inavlid input filename or inputfile already given.")

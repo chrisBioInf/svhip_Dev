@@ -7,35 +7,14 @@ import sys
 import_path = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir))
 sys.path.append(import_path)
 this_directory = os.path.dirname(os.path.realpath(__file__))
-
-if 'alignment_handler/' not in sys.path:
-    sys.path.append(os.path.join(this_directory, 'alignment_handler/'))
 if 'help/' not in sys.path:
     sys.path.append(os.path.join(this_directory, 'help/'))
-if 'parser/' not in sys.path:
-    sys.path.append(os.path.join(this_directory, 'parser/'))
 
-from window_handle import window_handle
-from alignment_handle import Alignment_handle
-from structural_conservation_filter import k_value_filter
-
-if 'defaults/' not in sys.path:
-    sys.path.append(os.path.abspath(os.path.join(import_path, 'defaults/')))
-if 'scaling/python' not in sys.path:
-    sys.path.append(os.path.abspath(os.path.join(import_path, 'scaling/python/')))
-if 'currysoup/' not in sys.path:
-    sys.path.append(os.path.abspath(os.path.join(import_path, 'currysoup/')))
-#if 'logger/' not in sys.path:
-#    sys.path.append(os.path.abspath(os.path.join(import_path, 'logger/')))
-if 'statistics/' not in sys.path:
-    sys.path.append(os.path.abspath(os.path.join(import_path, 'statistics/')))
-
-import default_params
-from currysoup import creation_soup
-#import logger
-from plotter import *
-#from cleanup import clean_dir
-#from time_clock import timer
+from alignment_handler.window_handle import window_handle
+from alignment_handler.alignment_handle import Alignment_handle
+from alignment_handler.structural_conservation_filter import k_value_filter
+import defaults.default_params as default_params
+from currysoup.currysoup import creation_soup
 import numpy as np
 from pandas import DataFrame
 from pandas import Series
