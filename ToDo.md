@@ -1,11 +1,12 @@
 # Svhip - Global ToDo
 
+Sortiert nach interner Prioritaet! Erledigte Punkte werden mit (+) markiert. 
 
 ## Refactor Readme.md
 Die aktuelle Readme beschreibt die Core-Funktionalitaet, aber geht nicht weiter auf Feinheiten der Funktionsparameter, einlesen multipler Alignments etc. ein. Folgende Aspekte sollten noch abgedeckt werden:
 Kommandos fuer das einlesen mehrerer Alignments, unterbinden der automatischen Negativset-Generierung, Verweis auf ein konkretes Beispiel (dem Repo hinzufuegen!).
 
-## Provide a working example
+## Provide a working example (+)
 Da bereits Beispielordner existieren, sollte ein ausgewaehltes Example dem Repo hinzugefuegt werden, s. o. 
 
 
