@@ -1,0 +1,24 @@
+System time: 10:36:05
+Argument command line: 
+
+DEBUG:root:FATAL: Input parameter is required. Use -h for more info.
+DEBUG:root:FATAL: Input parameter is required. Use -h for more info.
+FATAL: Input parameter is required. Use -h for more info.
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 21, in main
+    svhip = Svhip(argx=sys.argv)
+   File "/home/christopher/Development/Code Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 42, in __init__
+    self.inputfile = designate_inputfile(self.argx, self.func_argx, self.function_log)
+   File "/home/christopher/Development/Code Workshop/Svhip_development/svhip_Dev/svhip/currysoup/currysoup.py", line 31, in designate_inputfile
+    flog.write_log(lg_message)
+   File "/home/christopher/Development/Code Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+

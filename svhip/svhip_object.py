@@ -8,8 +8,8 @@ THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 # sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'currysoup/')))
 sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'logger/')))
 
-import data_gen.generate_data as generate_data
-import write_m.write_model as write_model
+import svhip.data_gen.generate_data as generate_data
+import svhip.write_m.write_model as write_model
 # import scaling.python.scaling_config as scaling_config
 from currysoup.currysoup import *
 import logger

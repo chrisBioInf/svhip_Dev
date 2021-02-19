@@ -6,8 +6,8 @@ Created on Thu Nov  5 14:04:54 2020
 @author: christopher
 """
 
-from window_handle import window_handle
-import tree_edit_distance as dist
+from data_gen.alignment_handler.window_handle import window_handle
+import data_gen.alignment_handler.tree_edit_distance as dist
 import os
 from math import floor
 from random import sample

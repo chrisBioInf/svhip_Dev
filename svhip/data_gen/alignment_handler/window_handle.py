@@ -1,5 +1,5 @@
 
-import tree_edit_distance as dist
+import data_gen.alignment_handler.tree_edit_distance as dist
 import sys
 from os import path
 from os import pardir
@@ -9,7 +9,7 @@ sys.path.append(path.abspath(path.join(import_path, 'parser/')))
 sys.path.append(path.abspath(path.join(import_path, 'RNAz_requirements/')))
 
 from read_fasta import *
-from RNAz_caller import extract_data
+from data_gen.alignment_handler.RNAz_caller import extract_data
 from subprocess import call
 from shlex import split
 

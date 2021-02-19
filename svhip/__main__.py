@@ -8,7 +8,7 @@ THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 # sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'currysoup/')))
 # sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'logger/')))
 
-from svhip_object import Svhip
+from svhip.svhip_object import Svhip
 from currysoup.currysoup import *
 
 def main():
@@ -23,6 +23,9 @@ def main():
     '''
     Interpret remaining command line:
     '''
+    if len(svhip.argx) <= 1:
+        show_general_help()
+    
     if '-data_gen' in svhip.argx or '-data_gen' in svhip.func_argx:
         svhip.create_data_set()
     
@@ -39,7 +42,7 @@ def main():
 
 ###########################Misc.########################################
 
-def show_general_help(self):
+def show_general_help():
     with open(os.path.join(THIS_FOLDER, "help/general.help"), "r") as fh:
         print(fh.read())
     return None

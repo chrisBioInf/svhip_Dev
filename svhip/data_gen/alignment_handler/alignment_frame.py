@@ -9,7 +9,7 @@ Created on Thu Dec  3 07:42:06 2020
 from Bio import SeqIO
 from Bio.Align.Applications import ClustalwCommandline
 from Bio import AlignIO
-import tree_edit_distance as dist
+import data_gen.alignment_handler.tree_edit_distance as dist
 import RNA
 
 #from RNAz_caller import *

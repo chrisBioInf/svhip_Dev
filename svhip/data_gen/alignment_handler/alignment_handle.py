@@ -2,9 +2,9 @@ from Bio import SeqIO
 from Bio.Align.Applications import ClustalwCommandline
 from Bio import AlignIO
 
-from RNAz_caller import *
+from data_gen.alignment_handler.RNAz_caller import *
 from parse.read_fasta import read_fa
-from window_handle import window_handle
+from data_gen.alignment_handler.window_handle import window_handle
 import sys
 from os import path
 from os import pardir
@@ -13,7 +13,7 @@ import multiprocessing
 from subprocess import call
 from shlex import split
 
-from alignment_frame import AlignmentFrame
+from data_gen.alignment_handler.alignment_frame import AlignmentFrame
 
 import_path = path.abspath(path.join(path.dirname(path.abspath(__file__)), pardir))
 sys.path.append(path.abspath(path.join(import_path, 'parser/')))
