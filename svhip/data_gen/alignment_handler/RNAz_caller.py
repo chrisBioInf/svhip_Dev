@@ -8,11 +8,12 @@ Created on Fri Nov  6 09:58:29 2020
 
 import multiprocessing
 import shlex
+import os
 import random
 from math import log
 from Bio import SeqIO
 from re import sub 
-from subprocess import call
+from subprocess import call, Popen 
 from subprocess import check_output
 
 ##############################Draw Alignments############################
@@ -26,13 +27,17 @@ Note2 to self: Is it even realistically feasible to stay in the constraints
 for sequence identity and have length deviation > 65%?
 """
 
+THIS_DIR = os.path.dirname(os.path.abspath(__file__))
+
 def spawn_alignment(argx):
     alignment_file, avg_ident, n_seq, align_id, align_n, min_id, window_size, step = argx[0], argx[1], argx[2], argx[3], argx[4], argx[5], argx[6], argx[7]
     filename = alignment_file + '_align_' +  str(n_seq)+'_'+str(align_n)
-    command_line = 'rnazWindow.pl --min-id=' + str(min_id) + ' --opt-id='+str(avg_ident)+' -s ' + str(step)+ ' -w ' + str(window_size) + ' --no-reference --min-seqs='+str(n_seq)+' --max-gap=25 --max-seqs='+str(n_seq)+' '+str(alignment_file)
+    script_path = os.path.join(THIS_DIR, ('rnazWindow.pl'))
+    command_line = 'perl ' + script_path + ' --min-id=' + str(min_id) + ' --opt-id='+str(avg_ident)+' -s ' + str(step)+ ' -w ' + str(window_size) + ' --no-reference --min-seqs='+str(n_seq)+' --max-gap=25 --max-seqs='+str(n_seq)+' '+str(alignment_file)
     arg_param = shlex.split(command_line)
+    
     align_file = open(filename, 'w')
-    call(arg_param, stdout = align_file)
+    Popen(arg_param, stdout=align_file)
     align_file.close()
     return [filename ,argx[3]]
     
@@ -155,7 +160,6 @@ def parse_alignment_file(filename, count = False):
     Use with Bio.AlignIO
     """
     seq_list = []
-    #seq_n = int(list(reversed(filename.split('_')))[2])
     with open(filename) as align_f:
         alignment = SeqIO.parse(align_f, 'clustal')
         
