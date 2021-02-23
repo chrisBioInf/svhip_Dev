@@ -89,7 +89,7 @@ These three form the core functionality of Svhip. `testset` will take an alignme
 ```bash
 svhip -i [alignment] -o myoutput.dat -data_gen
 ```
-Svhip will automatically determine the input format (clustal or FASTA file).
+In the cloned repository, the folder example_data contains a few FASTA-files that can be used for testing. Svhip will automatically determine the input format (clustal or FASTA file). 
 In general, Svhip utilizes four main suffixes to designate different file types used during the process:
 ```text
 	.dat		.dat files contain calculated features of alignments/alignment windows. 
@@ -137,6 +137,15 @@ svhip -i [alignmentname] -o [modelfilename] -auto
 ```
 This will effectively combine both commands and immediatly generate a functional `.model` file. All function parameters from both `write_m` and `data_gen` can be used with `auto`. 
 
+## Processing mutliple files at once
+
+Obviously, only appending data to a .dat file alignment per alignment is tedious and we usually want to process many alignments that we previously selected at once. The solution for this is the `-readall` flag for the `data_gen` program. It can be used like this:
+
+```bash
+svhip -i [inputfile] -o [outputdirectory] -data_gen -readall
+```
+
+Svhip will expect a folder with either FASTA files or clustal alignments as input and then process all found files one by one and write the output to the given .dat file. 
 
 ## Contact
 
