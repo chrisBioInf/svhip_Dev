@@ -10,11 +10,11 @@ Kommandos fuer das einlesen mehrerer Alignments, unterbinden der automatischen N
 Da bereits Beispielordner existieren, sollte ein ausgewaehltes Example dem Repo hinzugefuegt werden, s. o. 
 
 
-## Include RNAzWindow.pl Script
+## Include RNAzWindow.pl Script (+)
 
 Aktuell erfordert Svhip eine funktionale RNAz Installation. Mit eurem Einverstaendnis wuerde ich das rnazWindow script ebenfalls inkludieren und die Bindings im Code direkt loesen anstatt eine Commandline aufzurufen. Dies duerfte die stabilere Loesung sein. 
 
-## Delete unnecessary PyCache
+## Delete unnecessary PyCache (+)
 Es wurden am Anfang irrtuemlich einige .pycache Dateien geadded. Diese sind zu entfernen.
 
 ## Refactor function parameters
