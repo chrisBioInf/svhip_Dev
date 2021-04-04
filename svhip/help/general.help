@@ -56,7 +56,7 @@ General options:
 			Use at your own discretion.
 
 At the moment Svhip has four three methods (-testset, -write_m, -auto), which are described as follows:
-	-testset: 	Takes the arguments given in [OPTION ARGUMENTS] as well as an 
+	-data_gen: 	Takes the arguments given in [OPTION ARGUMENTS] as well as an 
 			[INPUT] parameter and writes a .dat file of training feature vectors
 			based on input files. Please note that testset_creation module
 			has its own set of options, for a complete list refer to help 
@@ -64,7 +64,7 @@ At the moment Svhip has four three methods (-testset, -write_m, -auto), which ar
 			>> python3 -m -svhip -testset -h
 			In any case, alignment windows are created and can be later used as
 			testing instance with RNAz.
-	-write_m:	Takes the arguments given in [OPTION ARGUMENTS] as well as an 
+	-train:	Takes the arguments given in [OPTION ARGUMENTS] as well as an
 			[INPUT] parameter, optimizes hyper parameters and writes a .model 
 			file based on training data
 			gathered using the testset_creation module (a .dat file written by

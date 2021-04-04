@@ -2,11 +2,6 @@
 import os
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-# sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'data_gen/')))
-# sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'scaling/python/')))
-# sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'write_m/')))
-# sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'currysoup/')))
-# sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'logger/')))
 
 from .svhip_object import Svhip
 from .currysoup.currysoup import *
@@ -29,7 +24,7 @@ def main():
     if '-data_gen' in svhip.argx or '-data_gen' in svhip.func_argx:
         svhip.create_data_set()
     
-    if '-write_m' in svhip.argx or '-write_m' in svhip.func_argx:
+    if '-train' in svhip.argx or '-train' in svhip.func_argx:
         svhip.train_model()
     
     elif '-auto' in svhip.argx or '-auto' in svhip.func_argx:

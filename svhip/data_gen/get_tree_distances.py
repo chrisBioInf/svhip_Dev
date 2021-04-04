@@ -9,7 +9,6 @@ from alignment_handler.window_handle import window_handle
 Currently not used as functionality was moved.
 
 Scheduled for removal, for now kept as reference.
-
 '''
 
 
@@ -85,8 +84,6 @@ def k_value_filter(aln_native, aln_control, k, outfile):
 
 def main(path, k_arrange, outfile):
     aln_native = get_native_group(path)
-    #aln_native = get_native_group("non_filtered_control_group")
-    #aln_control = get_control_group(path)
     aln_control = get_control_group("exp_1/set_1")
     
     for k in sorted(k_arrange):
@@ -115,4 +112,3 @@ def draw_tree_edit_distances(path1, path2):
     plt.savefig("tree_dist.pdf")
 
 draw_tree_edit_distances("exp_1/set_1","exp_2/set_1_control")
-#main("", [0.1, 0.2, 0.3, 0.4, 0.5], "exp_1/control_group")

@@ -94,7 +94,6 @@ class Alignment_handle:
         self.update_file()
             
     def realign_me(self):
-        outpath = ""
         if self.path.endswith(".clw2"):
             outpath = self.path
         else:

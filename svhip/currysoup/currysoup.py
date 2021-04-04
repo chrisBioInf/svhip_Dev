@@ -18,9 +18,9 @@ The origin of the name is a secret to everybody.
 ##########################Functions called from main()##################
 
 def help_needed(argx, func_argx):
-    if ('-h' in argx and '-write_m' not in argx and '-data_gen' not in argx) or ('--man' in argx and '-write_m' not in argx and '-data_gen' not in argx) :
+    if ('-h' in argx and '-train' not in argx and '-data_gen' not in argx) or ('--man' in argx and '-train' not in argx and '-data_gen' not in argx) :
         return True
-    elif ('-h' in func_argx or '--man' in func_argx) and '-write_m' not in func_argx and '-data_gen' not in func_argx:
+    elif ('-h' in func_argx or '--man' in func_argx) and '-train' not in func_argx and '-data_gen' not in func_argx:
         return True
 
 
@@ -322,7 +322,7 @@ def save_conf(func_argx, name):
         arg_included = False
         for a in range(0, len(argx)):
             if arg_included == False:
-                if argx[a] in ('-h', '-mute', '-sim', '-write_m', '-testset', '-neg'):
+                if argx[a] in ('-h', '-mute', '-sim', '-train', '-testset', '-neg'):
                     cmdline = cmdline + str(argx[a]) + ';'
                 elif argx[a] in ('-c_low', '-c_high', '-g_low', '-g_high', 
                                     '-num_c', '-num_g', '-n_fold', '-nu', 
@@ -353,8 +353,8 @@ def load_conf(name):
 def is_parameter(arg):
     if arg in ('-c_low', '-c_high', '-g_low', '-g_high', 
                     '-num_c', '-num_g', '-n_fold', '-nu', 
-                    '-nproc', '-smpl', '-simsmpl', '-maxid',
-                    '-minid', '-h', '-mute', '-sim', '-write_m', 
+                    '-nproc', '-simsmpl', '-maxid',
+                    '-minid', '-h', '-mute', '-train',
                     '-testset', '-neg'):
         return True
     else:
