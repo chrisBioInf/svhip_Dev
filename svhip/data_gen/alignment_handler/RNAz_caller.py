@@ -29,19 +29,30 @@ for sequence identity and have length deviation > 65%?
 
 THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 
+def unpack_argx(argx):
+    return argx[0], argx[1], argx[2], argx[3], argx[4], argx[5], argx[6], argx[7], argx[8]
+
 def spawn_alignment(argx):
-    alignment_file, avg_ident, n_seq, align_id, align_n, min_id, window_size, step = argx[0], argx[1], argx[2], argx[3], argx[4], argx[5], argx[6], argx[7]
-    filename = alignment_file + '_align_' +  str(n_seq)+'_'+str(align_n)
+    alignment_file, avg_ident, n_seq, align_id, align_n, min_id, window_size, step, window_path = unpack_argx(argx)
+    filename = window_path + '_align_' +str(n_seq)+'_'+str(align_n)
     script_path = os.path.join(THIS_DIR, ('rnazWindow.pl'))
-    command_line = 'perl ' + script_path + ' --min-id=' + str(min_id) + ' --opt-id='+str(avg_ident)+' -s ' + str(step)+ ' -w ' + str(window_size) + ' --no-reference --min-seqs='+str(n_seq)+' --max-gap=25 --max-seqs='+str(n_seq)+' '+str(alignment_file)
+    command_line = 'perl ' + script_path \
+                   + ' --min-id=' + str(min_id) \
+                   + ' --opt-id='+str(avg_ident)\
+                   +' -s ' + str(step)\
+                   + ' -w ' + str(window_size) \
+                   + ' --no-reference --min-seqs='+str(n_seq)\
+                   +' --max-gap=25 --max-seqs='\
+                   +str(n_seq) + ' '+str(alignment_file)
+
     arg_param = shlex.split(command_line)
-    
-    align_file = open(filename, 'w')
-    Popen(arg_param, stdout=align_file)
+    align_file = open(filename, 'w+')
+    p = Popen(arg_param, stdout=align_file)
+    p.communicate()
     align_file.close()
-    return [filename ,argx[3]]
+    return [filename, argx[3]]
     
-def draw_alignments(alignment_file, min_ident, max_ident, num_processes, mute, window_size, step):
+def draw_alignments(alignment_file, min_ident, max_ident, num_processes, mute, window_size, step, window_path):
     align_dict = {}
     argx_list = []
     
@@ -55,17 +66,18 @@ def draw_alignments(alignment_file, min_ident, max_ident, num_processes, mute, w
             align_id = 'align_'+str(n)+'_'+str(i+1)
             seq_n = n
             align_n = i
-            argx_list.append([alignment_file, avg_ident, seq_n, align_id, align_n +1, min_ident, window_size, step])
+            argx_list.append([alignment_file, avg_ident, seq_n, align_id, align_n +1, min_ident, window_size, step, window_path])
     
     with multiprocessing.Pool(num_processes) as pool:
         align_list = pool.map(spawn_alignment, argx_list)
     for entry in align_list:
         align_dict[entry[1]] = entry[0]
     if mute == False:
-        print(str(len(align_dict))+ " Alignment blocks created.")        
+        print(str(len(align_dict))+" Alignment blocks created.")
     return align_dict
 
 ##############################calculate parameters######################
+
 def math_log(n, base):
     if n != 0:
         return log(n, base)
@@ -100,8 +112,6 @@ def calculate_ShannonEntropy(seqs):
                     nucs_dict[seqs[a][i]] = literal_count
                 else:
                     pass
-        #print([nucs_dict.get('A'), nucs_dict.get('U'), nucs_dict.get('G'), nucs_dict.get('C'),nucs_dict.get('-')])
-        #l += sum([nucs_dict.get('A'), nucs_dict.get('U'), nucs_dict.get('G'), nucs_dict.get('C')])
         sA = float(nucs_dict.get('A')/N)*math_log(float(nucs_dict.get('A')/N),2)
         sU = float(nucs_dict.get('U')/N)*math_log(float(nucs_dict.get('U')/N),2)
         sG = float(nucs_dict.get('G')/N)*math_log(float(nucs_dict.get('G')/N),2)
@@ -109,7 +119,8 @@ def calculate_ShannonEntropy(seqs):
         svalues.append(sum([sA, sG, sC, sU]))
         
     return -float(1/N)* sum(svalues)
-    
+
+
 def rnaz_call(filename):
     """
     This one is for now an ugly workaround. It effectively uses the RNAz
@@ -139,7 +150,6 @@ def extract_data(filename):
     of z-score, MFE, shannon-entropy.
     Note that these still have to be normalized later.
     """
-    #print('Calculating values: ' + str(filename))
     seq_vector = parse_alignment_file(filename)
     if len(seq_vector) <= 1:
         print('Faulty alignment detected. Proceeding to next block.')

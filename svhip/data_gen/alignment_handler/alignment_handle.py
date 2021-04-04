@@ -23,6 +23,7 @@ class Alignment_handle:
     
     identifier = ""
     path = ""
+    window_path = ""
     native = True
     ids = []
     seq_dict = {}
@@ -32,7 +33,9 @@ class Alignment_handle:
         try:
             self.seq_dict = read_fa(path)
             self.path = path
-            #self.remove_all_gaps()
+            self.window_path = path.replace(".clw2", "") + "_windows/"
+            if not os.path.exists(self.window_path):
+                os.mkdir(self.window_path)
             self.identifier = path.split('/')[-1]
             self.native = native
         except Exception as e:
@@ -66,7 +69,6 @@ class Alignment_handle:
     '''
 
     def ident_Filter(self, maxident, num_processes, mute):
-        #key_matrix = split_keys(seq_dict, num_processes)
         discard_keys = []
         argx_list = []
         keylist = list(self.seq_dict.keys())
@@ -108,9 +110,6 @@ class Alignment_handle:
             for key in self.seq_dict.keys():
                 outf.write('>' + str(key) + '\n')
                 outf.write(str(self.seq_dict[key]) + '\n')
-        #Most applications will require a manual call of realign_me()!        
-                
-        #self.realign_me()
 
     '''
     Caller Function for SISSIz: Generates a simulated alignment with comparable
@@ -121,7 +120,7 @@ class Alignment_handle:
     '''
         
     def generate_control_alignment(self):
-        outpath = self.path.replace(".clw2" , "") + ".random"
+        outpath = self.path.replace(".clw2" ,"") + ".random"
         with open(outpath, "w+") as outf:
             cmd = "SISSIz -n 1 -s --flanks 1750 " + self.path
             call(split(cmd), stdout= outf)
@@ -137,7 +136,7 @@ class Alignment_handle:
     '''
     
     def spawn_subalignments(self, min_ident, max_ident, n_proc, window_size=120, step=40):
-        align_dict = draw_alignments(self.path, min_ident, max_ident, n_proc, True, window_size, step)
+        align_dict = draw_alignments(self.path, min_ident, max_ident, n_proc, True, window_size, step, self.window_path)
         for key in align_dict.keys():
             self.windows.append(window_handle(align_dict[key], self.native))
             
@@ -185,7 +184,6 @@ def levenshtein(seq1, seq2):
                         matrix[x-1,y-1] + 1,
                         matrix[x,y-1] + 1
                     )
-        #print (matrix)
         return (matrix[size_x - 1, size_y - 1])
 
 def calculateIdentity(str1, str2):

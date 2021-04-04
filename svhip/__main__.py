@@ -8,8 +8,8 @@ THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
 # sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'currysoup/')))
 # sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'logger/')))
 
-from svhip.svhip_object import Svhip
-from currysoup.currysoup import *
+from .svhip_object import Svhip
+from .currysoup.currysoup import *
 
 def main():
     '''
@@ -33,8 +33,7 @@ def main():
         svhip.train_model()
     
     elif '-auto' in svhip.argx or '-auto' in svhip.func_argx:
-        svhip.create_table()
-        svhip.train_model()
+        svhip.full_run()
     
     print('Program succesfully finished. Now closing.')
     return 1

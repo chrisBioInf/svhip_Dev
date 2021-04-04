@@ -1,0 +1,29 @@
+System time: 11:30:32
+Argument command line: -i /home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/example_data/Rf00001.fa -data_gen
+
+DEBUG:root:Process exited normally. 
+
+DEBUG:root:Process exited normally. 
+
+Process exited normally. 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 50, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 30, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 46, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 382, in testset_cr
+    outfile = build_data(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 240, in build_data
+    function_log.write_log("Process exited normally. \n")
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+

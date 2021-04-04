@@ -2,15 +2,10 @@ import sys
 import os
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-# sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'data_gen/')))
-# sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'scaling/python/')))
-# sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'write_m/')))
-# sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'currysoup/')))
 sys.path.append(os.path.abspath(os.path.join(THIS_FOLDER, 'logger/')))
 
 import svhip.data_gen.generate_data as generate_data
 import svhip.write_m.write_model as write_model
-# import scaling.python.scaling_config as scaling_config
 from currysoup.currysoup import *
 import logger
 
@@ -54,6 +49,13 @@ class Svhip:
         if len(self.func_argx) == 0:
             self.func_argx = self.argx
         write_model.write_m(self.func_argx, self.inputfile, self.outfile, self.function_log)
+
+    def full_run(self):
+        if len(self.func_argx) == 0:
+            self.func_argx = self.argx
+        data_dir = self.outfile + ".dat"
+        data_file = generate_data.testset_cr(self.func_argx, self.inputfile, data_dir, self.function_log)
+        write_model.write_m(self.func_argx, data_file, self.outfile, self.function_log)
 
     def verify_model(self):
         pass

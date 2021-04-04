@@ -10,7 +10,7 @@ sys.path.append(path.abspath(path.join(import_path, 'RNAz_requirements/')))
 
 from read_fasta import *
 from data_gen.alignment_handler.RNAz_caller import extract_data
-from subprocess import call
+from subprocess import call, Popen
 from shlex import split
 
 ''' 
@@ -67,8 +67,9 @@ class window_handle:
         outpath = self.path + ".random"
         with open(outpath, "w+") as outf:
             cmd = "SISSIz -n 1 -s --flanks 1750 " + self.path
-            call(split(cmd), stdout= outf)
-        return window_handle(outpath, native = False)
+            p = Popen(split(cmd), stdout=outf)
+            p.communicate()
+        return window_handle(outpath, native=False)
 
 
     '''

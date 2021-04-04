@@ -1,0 +1,835 @@
+System time: 08:02:17
+Argument command line: -i /home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/example_data/small_example.fa -auto
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_1
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_1
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_2_1
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_2
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_2
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_2_2
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_3
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_3
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_2_3
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_4
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_4
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_2_4
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_5
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_5
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_2_5
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_6
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_6
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_2_6
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_7
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_7
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_2_7
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_8
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_8
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_2_8
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_9
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_9
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_2_9
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_10
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_2_10
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_2_10
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_1
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_1
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_3_1
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_2
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_2
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_3_2
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_3
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_3
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_3_3
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_4
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_4
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_3_4
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_5
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_5
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_3_5
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_6
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_6
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_3_6
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_7
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_7
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_3_7
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_8
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_8
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_3_8
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_9
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_9
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_3_9
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_10
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_3_10
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_3_10
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_1
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_1
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_4_1
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_2
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_2
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_4_2
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_3
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_3
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_4_3
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_4
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_4
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_4_4
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_5
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_5
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_4_5
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_6
+ Empty file? 
+
+DEBUG:root:Failed to generate control alignment for: small_example.fa.clw2_align_4_6
+ Empty file? 
+
+Failed to generate control alignment for: small_example.fa.clw2_align_4_6
+ Empty file? 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 279, in main
+    create_training_set(inputfile, parameters, outfile, 1, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 90, in create_training_set
+    function_log.write_log("Failed to generate control alignment for: " + aln.windows[i].identifier + '\n Empty file? \n')
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
+DEBUG:root:Process exited normally. 
+
+DEBUG:root:Process exited normally. 
+
+Process exited normally. 
+
+MOST RECENT TRACEBACK: 
+  File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+   File "/home/christopher/anaconda3/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 51, in <module>
+    main()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/__main__.py", line 36, in main
+    svhip.create_data_set()
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/svhip_object.py", line 51, in create_data_set
+    generate_data.testset_cr(self.func_argx, self.inputfile, self.outfile, self.function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 438, in testset_cr
+    main(argx, inputfile, outfile, function_log)
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/data_gen/generate_data.py", line 295, in main
+    function_log.write_log("Process exited normally. \n")
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 31, in write_log
+    self.begin_traceback(self.get_log_name())
+   File "/home/christopher/Development/Code_Workshop/Svhip_development/svhip_Dev/svhip/logger/logger.py", line 43, in begin_traceback
+    rep_lg = traceback.format_stack()
+
