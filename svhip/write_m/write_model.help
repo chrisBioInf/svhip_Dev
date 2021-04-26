@@ -4,7 +4,7 @@
 
 Version: 0.0.28
 
-This module uses the data prepared by testset_creation.py (-testset) to train classifiers for use in RNAz prediction. 
+This module uses the data prepared by datageneration.py (-data_gen) to train classifiers for use in RNAz prediction. 
 Standard usage:
 	>> python3 -m svhip -i [INPUT] -o [OUTPUT] -write_m [OPTIONS]
 
@@ -52,7 +52,7 @@ Overview of OPTIONS:
 	-o:  	Destine a file for the output to be written into. If -o is not given
 		<inputfilename>.model will be written in folder 'models'.
 
-Note that all of these options can be freely used with the -auto command line argument as this included both the -testset and 
+Note that all of these options can be freely used with the -auto command line argument as this included both the -data_gen and 
 the -write_m methods.
 
 ################################################################################
