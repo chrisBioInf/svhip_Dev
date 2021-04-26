@@ -17,7 +17,7 @@ Svhip makes extensive use of four different types of files, recognizable by thei
 	.dat		.dat files contain calculated features of alignments/alignment windows. 
 			They are created any time a new input alignment is processed and may contain
 			positive and negative or only positive feature vector instances. These are 
-			already scaled, can be directly used for classifier training using the 
+			already scaled and can be directly used for classifier training using the 
 			-write_m command line argument and are utilized to hold training data 
 			for quick later recalibration or to allow flexible addition of new data.
 			For this reason they are also saved as an intermediate result when following
@@ -26,10 +26,10 @@ Svhip makes extensive use of four different types of files, recognizable by thei
 
 	.model		Contain all data necessary for the trained classifier to function and can be simply
 			loaded using the edited RNAz software. Loading a new .model file with RNAz is
-			equivalent to swapping he (dinucleotide, sequence based) classifier. End product of
+			equivalent to swapping the (dinucleotide, sequence based) classifier. End product of
 			the pipeline.
 
-	.aln_align_n_i	Partial alignment files, where n refers to the number of sequences per alignment and
+	.aln_align_n_i	Partial alignments, where n refers to the number of sequences per alignment and
 			i is an internal index counting the number of files created. These contain the alignment 
 			windows created from the pre processed input alignment (default columns: 120, step size: 40).
 			From these, feature vectors contained in the .dat files are calculated. They also serve 
@@ -40,13 +40,14 @@ Svhip makes extensive use of four different types of files, recognizable by thei
 			gap-controlled null models for both negative instance creation and structural conservation
 			validation. Remember to also include the randomized alignment windows when constructing a 
 			test set with Svhip. For classifier training purposes, they are automatically included 
-			upon generation. 
+			upon generation.
 	
 OPTIONS:
 General options:
-	-h, --man: 	Display this manual. When combined with the -testset, -write_m
+
+	-h, --man: 	Displays this manual. When combined with the -data_gen, -write_m
 			arguments, it describes specific options for these methods instead.
-			Since -auto combines both methods, 
+			Since -auto combines both methods, [TODO]
 	-svcfg:		Saves the current parameter string (i.e arguments except [INPUT] 
 			and [OUTPUT] as a <name>.cfg file in /configs. [EXPERIMENTAL]
 			Use at your own discretion.
@@ -55,23 +56,26 @@ General options:
 			are ignored and will still have to be manually given. [EXPERIMENTAL]
 			Use at your own discretion.
 
-At the moment Svhip has four three methods (-testset, -write_m, -auto), which are described as follows:
+At the moment Svhip has three methods (-data_gen, -write_m, -auto), which are described as follows:
+
 	-data_gen: 	Takes the arguments given in [OPTION ARGUMENTS] as well as an 
 			[INPUT] parameter and writes a .dat file of training feature vectors
-			based on input files. Please note that testset_creation module
+			based on input files. Please note that datageneration module
 			has its own set of options, for a complete list refer to help 
 			function of this module, i.e.:
-			>> python3 -m -svhip -testset -h
+			>> python3 -m -svhip -data_gen -h
 			In any case, alignment windows are created and can be later used as
 			testing instance with RNAz.
-	-train:	Takes the arguments given in [OPTION ARGUMENTS] as well as an
+
+	-train:		Takes the arguments given in [OPTION ARGUMENTS] as well as an
 			[INPUT] parameter, optimizes hyper parameters and writes a .model 
 			file based on training data
-			gathered using the testset_creation module (a .dat file written by
-			the -testset or -auto methods). Please note that the
+			gathered using the datageneration module (a .dat file written by
+			the -data_gen or -auto methods). Please note that the
 			write_model module has its own set of options, for a complete 
 			list refer to help function of this module, i.e.:
 			>> python3 -m -svhip -write_m -h
+
 	-auto:		Combines both above options. Takes an [INPUT] parameter and creates 
 			a .model file. Note that at the moment this option will be
 			executed using the default parameters for both modules, so 
@@ -86,12 +90,12 @@ In the most broad sense, Svhip supports three different ways of getting from a s
 		in a pre-existing .dat file, that can then be used to retrain the classifier with the -write_m option
 		without having to reprocess the entire pipeline for all alignments. An example case would be:
 		
-		>> python3 -m svhip -i [INPUT ALIGNMENT] -o [TARGET .dat FILE] -testset
+		>> python3 -m svhip -i [INPUT ALIGNMENT] -o [TARGET .dat FILE] -data_gen
 
 		Svhip will then ask if a negative instance set should automatically be generated. If "y" is given,
 		the alignment will be processed and negative and positive feature vector instances added to the .dat
 		file (if none is present, it will be generated). If 'n' is answered, only positive feature vectors will be 
-		calculated. Should for some reason really a classifier be trained using only one input alignment, it
+		calculated. Should, for some reason, a classifier really be trained using only one input alignment, it
 		is sufficient to use:
 
 		>> python3 -m svhip -i [INPUT ALIGNMENT] -o [OUTPUT .model FILENAME] -auto
@@ -121,7 +125,7 @@ In the most broad sense, Svhip supports three different ways of getting from a s
 		
 		Or, if a testset is to be created this way:
 
-		>> python3 -m svhip -i [FILE.ini] -o [OUTPUT .dat FILENAME] -testset -readall
+		>> python3 -m svhip -i [FILE.ini] -o [OUTPUT .dat FILENAME] -data_gen -readall
 
 	((4))	Not starting from an input FASTA file or alignment, to process a pre created .dat file 
 		(for example using the (1) option described here) to train a classifier is done by simply
@@ -134,7 +138,7 @@ will be generated based on the input file name, and the output file will be gene
 
 Now, the above cases all assume that default parameters are to be used. For explicit descriptions of all arguments
 to fine-tune parameters like number of cross-validation steps, sample size for secondary structure validation and
-C and gamma parameter range refer to the -testset and -write_m man pages (see above). Parameters from both pages can
+C and gamma parameter range refer to the -data_gen and -write_m man pages (see above). Parameters from both pages can
 be used with the -auto command as it combines both methods.
 
 ################################################################################
