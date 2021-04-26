@@ -1,26 +1,26 @@
 #######################################################
-		Module: testset_creation.py
+		Module: datageneration.py (testset_creation.py at the moment)
 #######################################################
 
 Version: 0.0.28
 
-This module accepts one or several (in one directory) Rfam Alignments as input and creates raw 
+This module accepts one or several (stored in one directory) Rfam Alignments as input and creates raw 
 training data for use in decision model creation. 
 Standard usage:
-	>>  python3 -m svhip -i [INPUT] -o [OUTPUT] -testset [OPTIONS]
+	>>  python3 -m svhip -i [INPUT] -o [OUTPUT] -data_gen [OPTIONS]
 
 If it is not clear which parameter flags are to be set, a quick example program call would be:
-	>>  python3 -m svhip -i [INPUT] -o meins.dat -testset
+	>>  python3 -m svhip -i [INPUT] -o meins.dat -data_gen
 
 This writes the program output to the new file 'meins.dat'. 
-Here, we simply leave the [OPTIONS] field empty - in this case the program will fall back to default parameters. Note that the -readall flag (see below) must be set if you want to read more than one alignment at once (as is usually the case). The -readall option accepts a file listing Rfam alignments or FASTA files and their respective categories and then writes the extracted data into a single output file. 
+Here, we simply leave the [OPTIONS] field empty - in this case the program will fall back to default parameters. Note that the -readall flag (see below) must be set if you want to read more than one alignment at once (which is usually the case). The -readall option accepts a file listing of Rfam alignments or FASTA files and their respective categories and then writes the extracted data into a single output file. 
 Options that require an input value are used according to schematic:
 	... -option [value] ...
 All others, for example -mute, are simply True/False flags that are set True with:
 	... -option ...
 
-Note also, that the module can also be used ignoring the main module:
-	>> python3 testset_creation.py -i [INPUT] -o [OUTPUT] [OPTIONS]
+Also note, that the module can also be used ignoring the main module:
+	>> python3 datageneration.py -i [INPUT] -o [OUTPUT] [OPTIONS]
 
 ...but this is deprecated and I will not support with resulting issues.
 
@@ -45,30 +45,30 @@ Overview of OPTIONS:
 	-nproc 	Default: (Number of CPU cores -1)
 		Target number of processes for the multiprocessing pool. Should 
 		probably not be manually set, but here it is.  
-	-o 	Used to give chosen name to output file. Name must be next parameter 
+	-o 	Is used to give chosen name to output file. Name must be next parameter 
 		after -outf option, i.e ... -outf <name> ...
 
 Important main function calls, also described in the general manual page:
 
-	-readall
-		 Option for reading multiple input alignments at once. Supports and automatically 
-		 chooses one of two operation modes:
+	-readall 
+		Option for reading multiple input alignments at once. Supports and automatically 
+		chooses one of two operation modes:
 		 
-		 1) Path to an .ini file with alignment files in same folder is given.
-		 Accepts a file with list of .fasta file names and respective categories. 
-		 The program will read through file until a) end of file or b) a '#' is 
-		 encountered. All extracted data points will be written to same 
-	 	 output file.
-		 2) Path to folder with multiple input files to be processed. Svhip will ask
-		 if negative sets should be auto-generated for all of them.
+		1) Path to an .ini file with alignment files in same folder is given.
+		Accepts a file with list of .fasta file names and respective categories. 
+		The program will read through file until a) end of file or b) a '#' is 
+		encountered. All extracted data points will be written to same 
+	 	output file.
+		2) Path to folder with multiple input files meant to be processed. Svhip will ask
+		if negative sets should be auto-generated for all of them.
 
-		 >>python3 -m svhip -i [INPUT DIRECTORY] -o [OUTPUT] -testset_cr -readall
+		>>python3 -m svhip -i [INPUT DIRECTORY] -o [OUTPUT] -testset_cr -readall
 	 
-	-extract:
-	 Accepts an alignment window file [2-12 seqs] (suffix: aln_align_n_i) and returns a tripel of values: z-score, SCI, 
-	 Shannon-Entropy. To be used if sorting of input data was done previously. Can quickly
-	 scan over values for given files if additional sorting steps are to be implemented... 
-	 ...but does not contribute much to the actual pipeline right now.
+	-extract: 
+		Accepts an alignment window file [2-12 seqs] (suffix: aln_align_n_i) and returns a tripel of values: z-score, SCI, 
+	 	Shannon-Entropy. To be used if sorting of input data was done previously. Can quickly
+	 	scan over values for given files if additional sorting steps are to be implemented... 
+	 	...but does not contribute much to the actual pipeline right now.
 
 ################################################################################
 
