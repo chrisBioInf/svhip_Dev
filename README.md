@@ -3,7 +3,7 @@
 ## Introduction
 
 Svhip is a software developed in Python for the automatic retraining of the RNAz 2.0 SVM-Classifier, a bioinformatics tool for the de novo discovery of non-coding RNA in whole genome screens.   
-It processes Clustal-Alignments or raw FASTA files and returns a list of feature tuples, that can either be used to recalibrate or test the RNAz software or train a completely independent classifier. Working examples for the latter are included in the repository (https://github.com/chrisBioInf/svhip_Dev), provided is a Random Forests, a Logistic Regression classifier and others.  
+It processes Clustal-Alignments or raw FASTA files and returns a list of feature tuples, that can either be used to recalibrate or test the RNAz software or train a completely independent classifier. Working examples for the latter are included in the repository (https://github.com/chrisBioInf/svhip_Dev), provided is a Random Forest, a Logistic Regression classifier and others.  
 The RNAz classification software can be downloaded here: https://www.tbi.univie.ac.at/software/RNAz/#download.  
 
 The basic Svhip-workflow looks something like this:  
@@ -39,7 +39,7 @@ python -m pip install --upgrade pip setuptools wheel
 
 Navigate to the cloned git repository:
 ```bash
-cd Svhip_Dev
+cd svhip_Dev
 ```
 And install the current Svhip distribution with:
 ```bash 
@@ -61,31 +61,31 @@ svhip -i [INPUT] -o [OUTPUT] [OPTION] [OPTION ARGUMENTS]
 
 where viable OPTION parameters are:
 
-	-testset: 	Takes the arguments given in [OPTION ARGUMENTS] as well as an 
+	-data_gen: 	Takes the arguments given in [OPTION ARGUMENTS] as well as an 
 			[INPUT] parameter and writes a .dat file of training feature vectors
-			based on input files. Please note that testset_creation module
+			based on input files. Please note that datageneration module
 			has its own set of options, for a complete list refer to help 
 			function of this module, i.e.:
-			>> svhip -testset --help
-			In any case, alignment windows are created and can be later used as
+			>> svhip -data_gen --help
+			In any case, alignment windows are created and can later be used as
 			testing instance with RNAz.
 	-write_m:	Takes the arguments given in [OPTION ARGUMENTS] as well as an 
 			[INPUT] parameter, optimizes hyper parameters and writes a .model 
 			file based on training data
-			gathered using the testset_creation module (a .dat file written by
-			the -testset or -auto methods). Please note that the
+			gathered using the datageneration module (a .dat file written by
+			the -data_gen or -auto methods). Please note that the
 			write_model module has its own set of options, for a complete 
 			list refer to help function of this module, i.e.:
 			>> svhip -write_m --help
-	-auto:		Combines both above options. Takes an [INPUT] parameter and creates 
-			a .model file. Note that at the moment this option will be
+	-auto:		Combines both the options above. Takes an [INPUT] parameter and creates 
+			a .model file. Note that, at the moment, this option will be
 			executed using the default parameters for both modules, so 
 			the input syntax amounts to:
 			>> svhip -i [INPUT] -o [OUTPUT FILE] -auto
 			Alignment windows created are still saved for potential later use.
 
 ```
-These three form the core functionality of Svhip. `testset` will take an alignment file you provide with the `-i [alignment name]` parameter and calculate a set of corresponding feature vectors for training. These will by default be written to a file called `[alignment name].dat` but can be specified with `-o [output name]`, like:
+These three form the core functionality of Svhip. `data_gen` will take an alignment file you provide with the `-i [alignment name]` parameter and calculate a set of corresponding feature vectors for training. These will by default be written to a file called `[alignment name].dat` but can be specified with `-o [output name]`, like:
 ```bash
 svhip -i [alignment] -o myoutput.dat -data_gen
 ```
@@ -95,7 +95,7 @@ In general, Svhip utilizes four main suffixes to designate different file types 
 	.dat		.dat files contain calculated features of alignments/alignment windows. 
 			They are created any time a new input alignment is processed and may contain
 			positive and negative or only positive feature vector instances. These are 
-			already scaled, can be directly used for classifier training using the 
+			already scaled and can be directly used for classifier training using the 
 			-write_m command line argument and are utilized to hold training data 
 			for quick later recalibration or to allow flexible addition of new data.
 			For this reason they are also saved as an intermediate result when following
@@ -104,7 +104,7 @@ In general, Svhip utilizes four main suffixes to designate different file types 
 
 	.model		Contain all data necessary for the trained classifier to function and can be simply
 			loaded using the edited RNAz software. Loading a new .model file with RNAz is
-			equivalent to swapping he (dinucleotide, sequence based) classifier. End product of
+			equivalent to swapping the (dinucleotide, sequence based) classifier. End product of
 			the pipeline.
 
 	.aln_align_n_i	Partial alignments, where n refers to the number of sequences per alignment and
@@ -129,7 +129,7 @@ With that in mind, let's return to the usage example. If we want to use the newl
 svhip -i aln.dat -o aln.model -write_m 
 ``` 
 
-This will suffice to write all necessary classifier data in the `aln.model` file once training is finished. This can then immediatly be used with the RNAz version edited for dynamic model loading or by replacing the native dinucleotide_decision.model file before compilation. Please also have a look at the individual `--help` pages of the `testset` and `write_m` arguments that further explain individual options, like maximum pairwise sequence identity, depth of crossvalidation during classifier training and others.  
+This will suffice to write all necessary classifier data in the `aln.model` file once training is finished. This can then immediatly be used with the RNAz version edited for dynamic model loading or by replacing the native dinucleotide_decision.model file before compilation. Please also have a look at the individual `--help` pages of the `data_gen` and `write_m` arguments that further explain individual options, like maximum pairwise sequence identity, depth of crossvalidation during classifier training and others.  
 If you want to create a `.model` file for RNAz and want to take a shortcut, you can also combine both command explained above, by typing:
 
 ```bash
@@ -139,13 +139,13 @@ This will effectively combine both commands and immediatly generate a functional
 
 ## Processing mutliple files at once
 
-Obviously, only appending data to a .dat file alignment per alignment is tedious and we usually want to process many alignments that we previously selected at once. The solution for this is the `-readall` flag for the `data_gen` program. It can be used like this:
+Obviously, only appending data to a .dat file alignment per alignment is tedious and we usually want to process many alignments, that we previously selected, at once. The solution for this is the `-readall` flag for the `data_gen` program. It can be used like this:
 
 ```bash
 svhip -i [inputfile] -o [outputdirectory] -data_gen -readall
 ```
 
-Svhip will expect a folder with either FASTA files or clustal alignments as input and then process all found files one by one and write the output to the given .dat file. 
+Svhip will expect a folder with either FASTA files or clustal alignments as input and then process all found files one by one, writing the output to the given .dat file. 
 
 ## Contact
 
